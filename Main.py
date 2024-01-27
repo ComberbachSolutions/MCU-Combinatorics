@@ -91,9 +91,26 @@ MCU_Pins = [
     },
 ]
 
-Requirements = ["Feature 1", "Feature 1", "Feature 1"]
-Solution = []
-WorkingSolution = MCU_Pins.copy()
+Requirements = [
+    [
+        "Indoor Temperature Signal",
+        "ADC",
+        "",
+        ""
+    ],
+    [
+        "Air Damper 1 Tach Signal",
+        "ADC",
+        "",
+        ""
+    ],
+    [
+        "Grundfos 2 Pressure Signal",
+        "ADC",
+        "",
+        ""
+    ],
+]
 
 def Number_Of_Potential_Combinations(Pins):
     Count = 1
@@ -105,19 +122,6 @@ def Number_Of_Potential_Combinations(Pins):
                     UniqueChannels += 1
         Count *= UniqueChannels
     return Count
-
-def Solve(Requirements, Pins):
-    for PinNumber, Features in enumerate(Pins):
-        print(f"Pin {PinNumber} has these features")
-        for Feature, SubFeatures in Features.items():
-            print(f"\t{Feature} has these Subfeatures")
-            for SubFeature, Channels in SubFeatures.items():
-                print(f"\t\t{SubFeature} has these channels")
-                for Channel in Channels:
-                    if Channel != "":
-                        print(f"\t\t\t{Channel}")
-def Remove_Channel(PinMap, Feature, SubFeature, Channel):
-    PinMap[Feature][SubFeature].remove(Channel)
 
 def Remove_Channel(ChannelMap, Channel):
     ChannelMap.remove(Channel)
@@ -131,23 +135,27 @@ def Remove_Feature(PinMap, Feature):
 def Remove_Pin(PinMap, Pin):
     PinMap.remove(Pin)
 
-print("*"*50)
-print(MCU_Pins[3])
-Remove_Channel(MCU_Pins[3]["Feature DeleteMe"]["Subfeature DeleteMe"], "DeleteMe")
-print(MCU_Pins[3])
-print("*"*50)
-print(MCU_Pins[3])
-Remove_Subfeature(MCU_Pins[3]["Feature DeleteMe"], "Subfeature DeleteMe")
-print(MCU_Pins[3])
-print("*"*50)
-print(MCU_Pins[3])
-Remove_Feature(MCU_Pins[3], "Feature DeleteMe")
-print(MCU_Pins[3])
-print("*"*50)
-print(MCU_Pins)
-Remove_Feature(MCU_Pins, 3)
-print(MCU_Pins)
-print("*"*50)
+def Solve(Requirements, PinDefinition):
+    Solutions = []
+    for Attempt in range(Number_Of_Potential_Combinations(MCU_Pins)):
+        print("*"*50)
+        WorkingSolution = []
+        Pins = PinDefinition.copy()
+        for NetName, RequiredFeature, RequiredSubfeature, RequiredChannel in Requirements:
+            for PinNumber, Features in enumerate(Pins):
+                for Feature, SubFeatures in Features.items():
+                    if Feature == RequiredFeature:
+                        for SubFeature, Channels in SubFeatures.items():
+                            if SubFeature == RequiredSubfeature or RequiredSubfeature == "":
+                                for Channel in Channels:
+                                    if Channel == RequiredChannel or RequiredChannel == "":
+                                        WorkingSolution.append(f"{NetName} on Pin {PinNumber} using feature {Feature}, subfeature {SubFeature}, and channel {Channel}")
+        Solutions.append(WorkingSolution)                            
+    return Solutions
 
-Solve(Requirements, MCU_Pins)
+MySolutions = Solve(Requirements, MCU_Pins)
+for Solution in MySolutions:
+    for Pin in Solution:
+        print(Pin)
+    print("*"*50)
 print(f"Combinations {Number_Of_Potential_Combinations(MCU_Pins)}")
