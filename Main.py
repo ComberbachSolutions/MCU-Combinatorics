@@ -48,6 +48,39 @@ MCU_Pins = [
             [
                 ""
             ],
+            "Subfeature C":
+            [
+                "Channel 1",
+                "DeleteMe"
+            ],
+        },
+    },
+    {
+        "Feature 4":
+        {
+            "Subfeature C":
+            [
+                "Channel 1",
+                "Channel 2",
+            ],
+            "Subfeature DeleteMe":
+            [
+                "Channel 3",
+            ],
+        },
+    },
+    {
+        "Feature DeleteMe":
+        {
+            "Subfeature C":
+            [
+                "Channel 1",
+                "Channel 2",
+            ],
+            "Subfeature A":
+            [
+                "Channel 3",
+            ],
         },
     },
 ]
@@ -77,6 +110,28 @@ def Solve(Requirements, Pins):
                 for Channel in Channels:
                     if Channel != "":
                         print(f"\t\t\t{Channel}")
+def Remove_Channel(PinMap, Feature, SubFeature, Channel):
+    PinMap[Feature][SubFeature].remove(Channel)
+
+def Remove_Subfeature(PinMap, Feature, SubFeature):
+    del PinMap[Feature][SubFeature]
+
+def Remove_Feature(PinMap, Feature):
+    del PinMap[Feature]
+
+print("*"*50)
+print(MCU_Pins[2])
+Remove_Channel(MCU_Pins[2], "Feature 3", "Subfeature C", "DeleteMe")
+print(MCU_Pins[2])
+print("*"*50)
+print(MCU_Pins[3])
+Remove_Subfeature(MCU_Pins[3], "Feature 4", "Subfeature DeleteMe")
+print(MCU_Pins[3])
+print("*"*50)
+print(MCU_Pins[4])
+Remove_Feature(MCU_Pins[4], "Feature DeleteMe")
+print(MCU_Pins[4])
+print("*"*50)
 
 Solve(Requirements, MCU_Pins)
 print(f"Combinations {Number_Of_Potential_Combinations(MCU_Pins)}")
