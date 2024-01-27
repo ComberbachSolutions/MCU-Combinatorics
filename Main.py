@@ -55,6 +55,13 @@ MCU_Pins = [
         },
     },
     {
+        "Feature DeleteMe Eventually":
+        {
+            "Subfeature DeleteMe":
+            [
+                "DeleteMe"
+            ],
+        },
         "Feature DeleteMe":
         {
             "Subfeature DeleteMe":
@@ -102,6 +109,9 @@ def Remove_Subfeature(SubfeatureMap, SubFeature):
 def Remove_Feature(PinMap, Feature):
     del PinMap[Feature]
 
+def Remove_Pin(PinMap, Pin):
+    PinMap.remove(Pin)
+
 print("*"*50)
 print(MCU_Pins[3])
 Remove_Channel(MCU_Pins[3]["Feature DeleteMe"]["Subfeature DeleteMe"], "DeleteMe")
@@ -114,6 +124,10 @@ print("*"*50)
 print(MCU_Pins[3])
 Remove_Feature(MCU_Pins[3], "Feature DeleteMe")
 print(MCU_Pins[3])
+print("*"*50)
+print(MCU_Pins)
+Remove_Feature(MCU_Pins, 3)
+print(MCU_Pins)
 print("*"*50)
 
 Solve(Requirements, MCU_Pins)
