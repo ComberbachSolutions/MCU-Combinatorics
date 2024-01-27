@@ -9,48 +9,67 @@ ExamplePin = {"ADC":{"ADC0":["AN001"], "ADC1":["AN001"]}, "GPT":{"GPT5":["A"]}}
 
 MCU_Pins = [
     {
-        "Feature 1":
+        "GPIO":
         {
-            "Subfeature A":
+            "P500":
             [
-                ""
+                "Read",
+                "Write",
             ],
-            "Subfeature B":
+        },
+        "GPT":
+        {
+            "GTIOC11":
             [
-                ""
+                "A",
             ],
-            "Subfeature C":
+        },
+        "ADC":
+        {
+            "ADC0":
             [
-                "Channel 0",
-                "Channel 1",
-                "Channel 2"
+                "AN016",
             ],
-        }
+        },
     },
     {
-        "Feature 2":
+        "GPIO":
         {
-            "Subfeature A":
+            "P014":
             [
-                ""
+                "Read",
+                "Write",
             ],
-            "Subfeature C":
+        },
+        "ADC":
+        {
+            "ADC0":
             [
-                "Channel 0",
-                "Channel 2"
+                "AN005",
             ],
-        }
+            "ADC1":
+            [
+                "AN105",
+            ],
+        },
     },
     {
-        "Feature 3":
+        "GPIO":
         {
-            "Subfeature B":
+            "P007":
             [
-                ""
+                "Read",
             ],
-            "Subfeature C":
+        },
+        "ADC":
+        {
+            "PGAVSS":
             [
-                "Channel 1",
+                "PGAVSS100",
+            ],
+            "ADC1":
+            [
+                "AN107",
             ],
         },
     },
