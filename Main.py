@@ -94,34 +94,23 @@ MCU_Pins = [
 Requirements = [
     [
         "Indoor Temperature Signal",
-        "ADC",
-        "",
-        ""
+        ["ADC",],
+        ["ADC0","ADC1",],
+        ["",]
     ],
     [
         "Air Damper 1 Tach Signal",
-        "ADC",
-        "",
-        ""
+        ["ADC",],
+        ["ADC0","ADC1",],
+        ["",]
     ],
     [
         "Grundfos 2 Pressure Signal",
-        "ADC",
-        "",
-        ""
+        ["ADC",],
+        ["ADC0","ADC1",],
+        ["",]
     ],
 ]
-
-def Number_Of_Potential_Combinations(Pins):
-    Count = 1
-    for PinNumber, Features in enumerate(Pins):
-        UniqueChannels = 0
-        for Feature, SubFeatures in Features.items():
-            for SubFeature, Channels in SubFeatures.items():
-                for Channel in Channels:
-                    UniqueChannels += 1
-        Count *= UniqueChannels
-    return Count
 
 def Remove_Channel(ChannelMap, Channel):
     ChannelMap.remove(Channel)
@@ -135,27 +124,37 @@ def Remove_Feature(PinMap, Feature):
 def Remove_Pin(PinMap, Pin):
     PinMap.remove(Pin)
 
-def Solve(Requirements, PinDefinition):
-    Solutions = []
-    for Attempt in range(Number_Of_Potential_Combinations(MCU_Pins)):
-        print("*"*50)
-        WorkingSolution = []
-        Pins = PinDefinition.copy()
-        for NetName, RequiredFeature, RequiredSubfeature, RequiredChannel in Requirements:
-            for PinNumber, Features in enumerate(Pins):
-                for Feature, SubFeatures in Features.items():
-                    if Feature == RequiredFeature:
-                        for SubFeature, Channels in SubFeatures.items():
-                            if SubFeature == RequiredSubfeature or RequiredSubfeature == "":
-                                for Channel in Channels:
-                                    if Channel == RequiredChannel or RequiredChannel == "":
-                                        WorkingSolution.append(f"{NetName} on Pin {PinNumber} using feature {Feature}, subfeature {SubFeature}, and channel {Channel}")
-        Solutions.append(WorkingSolution)                            
-    return Solutions
+def Generate_Requirement(Requirements):
+    for NetName, RequiredFeatures, RequiredSubfeatures, RequiredChannels in Requirements:
+        for RequiredFeature in RequiredFeatures:
+            for RequiredSubfeature in RequiredSubfeatures:
+                for RequiredChannel in RequiredChannels:
+                    yield [NetName, RequiredFeature, RequiredSubfeature, RequiredChannel]
 
-MySolutions = Solve(Requirements, MCU_Pins)
+def Find_Valid_Pins_For_Nets(Requirements, PinDefinition):
+    ValidPins = []
+    Pins = PinDefinition.copy()
+    for NetName, RequiredFeature, RequiredSubfeature, RequiredChannel in Generate_Requirement(Requirements):
+        ValidOptions = 0
+        for PinNumber, Features in enumerate(Pins):
+            for Feature, SubFeatures in Features.items():
+                if Feature != RequiredFeature:
+                    continue
+                for SubFeature, Channels in SubFeatures.items():
+                    if SubFeature != RequiredSubfeature and RequiredSubfeature != "":
+                        continue
+                    for Channel in Channels:
+                        if Channel != RequiredChannel and RequiredChannel != "":
+                            continue
+                        ValidPins.append(f"{NetName} on Pin {PinNumber} using feature {Feature}, subfeature {SubFeature}, and channel {Channel}")
+                        ValidOptions += 1
+        if ValidOptions == 0:
+            print(f"Net {NetName} does not have any valid pins available to it")
+    
+    return ValidPins
+
+MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
+print("*"*50)
 for Solution in MySolutions:
-    for Pin in Solution:
-        print(Pin)
-    print("*"*50)
-print(f"Combinations {Number_Of_Potential_Combinations(MCU_Pins)}")
+    print(Solution)
+print("*"*50)
