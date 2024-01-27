@@ -8,16 +8,48 @@
 ExamplePin = {"ADC":{"ADC0":["AN001"], "ADC1":["AN001"]}, "GPT":{"GPT5":["A"]}}
 
 MCU_Pins = [
-    {"Feature 1":{
-        "Subfeature A":[""],
-        "Subfeature B":[""],
-        "Subfeature C":["Channel 0", "Channel 1", "Channel 2"]}},
-    {"Feature 2":{
-        "Subfeature A":[""],
-        "Subfeature C":["Channel 0", "Channel 2"]}},
-    {"Feature 3":{
-        "Subfeature B":[""],
-        "Subfeature C":["Channel 1"]}},
+    {
+        "Feature 1":
+        {
+            "Subfeature A":
+            [
+                ""
+            ],
+            "Subfeature B":
+            [
+                ""
+            ],
+            "Subfeature C":
+            [
+                "Channel 0",
+                "Channel 1",
+                "Channel 2"
+            ],
+        }
+    },
+    {
+        "Feature 2":
+        {
+            "Subfeature A":
+            [
+                ""
+            ],
+            "Subfeature C":
+            [
+                "Channel 0",
+                "Channel 2"
+            ],
+        }
+    },
+    {
+        "Feature 3":
+        {
+            "Subfeature B":
+            [
+                ""
+            ],
+        },
+    },
 ]
 
 Requirements = ["Feature 1", "Feature 1", "Feature 1"]
