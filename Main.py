@@ -5,128 +5,169 @@
 # Channel (Specific)
 #   AN001, AN002, AN100, etc
 
-ExamplePin = [["Pin Number", {"GPIO":{"P500":["Read",], }, }], ]
+ExamplePin = {
+    "Pin Unique ID":
+    {
+        "Feature":
+        {
+            "Subfeature":
+            [
+                "Channel",
+            ],
+        },
+    },
+}
 
-MCU_Pins = [
-    [
-        "Pin 140",
+ExampleRequirements = {
+    "Net Name":
+    {
+        "Feature":
         {
-            "GPIO":
-            {
-                "P500":
-                [
-                    "Read",
-                    "Write",
-                ],
-            },
-            "GPT":
-            {
-                "GTIOC11":
-                [
-                    "A",
-                ],
-            },
-            "ADC":
-            {
-                "ADC0":
-                [
-                    "AN016",
-                ],
-            },
+            "Subfeature":
+            [
+                "Channel"
+            ],
         },
-    ],
-    [
-        "Pin 152",
+    },
+}
+
+MCU_Pins = {
+    "Pin 140":
+    {
+        "GPIO":
         {
-            "GPIO":
-            {
-                "P014":
-                [
-                    "Read",
-                    "Write",
-                ],
-            },
-            "ADC":
-            {
-                "ADC0":
-                [
-                    "AN005",
-                ],
-                "ADC1":
-                [
-                    "AN105",
-                ],
-            },
+            "P500":
+            [
+                "Read",
+                "Write",
+            ],
         },
-    ],
-    [
-        "Pin 162",
+        "GPT":
         {
-            "GPIO":
-            {
-                "P007":
-                [
-                    "Read",
-                ],
-            },
-            "ADC":
-            {
-                "PGAVSS":
-                [
-                    "PGAVSS100",
-                ],
-                "ADC1":
-                [
-                    "AN107",
-                ],
-            },
+            "GTIOC11":
+            [
+                "A",
+            ],
         },
+        "ADC":
         {
-            "Feature DeleteMe Eventually":
-            {
-                "Subfeature DeleteMe":
-                [
-                    "DeleteMe"
-                ],
-            },
-            "Feature DeleteMe":
-            {
-                "Subfeature DeleteMe":
-                [
-                    "DeleteMe"
-                ],
-            },
+            "ADC0":
+            [
+                "AN016",
+            ],
         },
-    ],
-]
+    },
+    "Pin 152":
+    {
+        "GPIO":
+        {
+            "P014":
+            [
+                "Read",
+                "Write",
+            ],
+        },
+        "ADC":
+        {
+            "ADC0":
+            [
+                "AN005",
+            ],
+            "ADC1":
+            [
+                "AN105",
+            ],
+        },
+    },
+    "Pin 162":
+    {
+        "GPIO":
+        {
+            "P007":
+            [
+                "Read",
+            ],
+        },
+        "ADC":
+        {
+            "PGAVSS":
+            [
+                "PGAVSS100",
+            ],
+            "ADC1":
+            [
+                "AN107",
+            ],
+        },
+    },
+    "Pin Deleteable":
+    {
+        "Feature DeleteMe Eventually":
+        {
+            "Subfeature":
+            [
+                "Channel"
+            ],
+        },
+        "Feature DeleteMe":
+        {
+            "Subfeature DeleteMe":
+            [
+                "DeleteMe",
+                "Channel"
+            ],
+        },
+    },
+}
 
 Requirements = {
     "Indoor Temperature Signal":
     {
         "ADC":
         {
-            "ADC0":[""],
-            "ADC1":[""],
+            "ADC0":
+            [
+                ""
+            ],
+            "ADC1":
+            [
+                ""
+            ],
         },
     },
     "Air Damper 1 Tach Signal":
     {
         "ADC":
         {
-            "ADC0":["",],
-            "ADC1":["",],
+            "ADC0":
+            [
+                "",
+            ],
+            "ADC1":
+            [
+                "",
+            ],
         },
     },
     "Grundfos 2 Pressure Signal":
     {
         "ADC":
         {
-            "ADC0":["AN005",],
-            "ADC1":["AN105",],
+            "ADC0":
+            [
+                "AN005",
+            ],
+            "ADC1":
+            [
+                "AN105",
+            ],
         },
         "GPIO":
         {
-            "":["Write",]
+            "":
+            [
+                "Write",
+            ]
         },
     },
 }
@@ -140,8 +181,8 @@ def Remove_Subfeature(SubfeatureMap, SubFeature):
 def Remove_Feature(PinMap, Feature):
     del PinMap[Feature]
 
-def Remove_Pin(PinMap, Pin):
-    PinMap.remove(Pin)
+def Remove_Pin(PinMaps, Pin):
+    del PinMaps[Pin]
 
 def Generate_Requirement(Requirements):
     for NetName in Requirements:
@@ -150,66 +191,49 @@ def Generate_Requirement(Requirements):
                 for RequiredChannel in Requirements[NetName][RequiredFeature][RequiredSubfeature]:
                     yield NetName, RequiredFeature, RequiredSubfeature, RequiredChannel
 
-def Generate_Pin_Mappings(PinMap):
-    for PinNumber, Pin in enumerate(PinMap):
-        for Feature in Pin:
-            for Subfeature in Pin[Feature]:
-                for Channel in Pin[Feature][Subfeature]:
-                    yield [PinNumber, Feature, Subfeature, Channel]
+def Generate_Pin_Mappings(PinMaps):
+    for PinName, Features in PinMaps.items():
+        for Feature, Subfeatures in Features.items():
+            for Subfeature, Channels in Subfeatures.items():
+                for Channel in Channels:
+                    yield [PinName, Feature, Subfeature, Channel]
 
-def Find_Valid_Pins_For_Nets(Requirements, Pins):
+def Find_Valid_Pins_For_Nets(Requirements, PinMaps):
     ValidPins = {}
     for NetName in Requirements:
         ValidPins[NetName] = []
-
     for NetName, RequiredFeature, RequiredSubfeature, RequiredChannel in Generate_Requirement(Requirements):
-        for PinNumber, Features in enumerate(Pins):
-            for Feature, SubFeatures in Features.items():
+        for PinName, Features in PinMaps.items():
+            for Feature, Subfeatures in Features.items():
                 if Feature != RequiredFeature:
                     continue
-                for SubFeature, Channels in SubFeatures.items():
-                    if SubFeature != RequiredSubfeature and RequiredSubfeature != "":
+                for Subfeature, Channels in Subfeatures.items():
+                    if Subfeature != RequiredSubfeature and RequiredSubfeature != "":
                         continue
                     for Channel in Channels:
                         if Channel != RequiredChannel and RequiredChannel != "":
                             continue
-                        ValidPins[NetName].append([PinNumber, Feature, SubFeature, Channel])
-
+                        ValidPins[NetName].append([PinName, Feature, Subfeature, Channel])
     for Net in ValidPins:
         if len(ValidPins[Net]) == 0:
             print("*"*50)
             print(f"Net '{NetName}' does not have any valid pins available to it")
             print("*"*50)
-
     return ValidPins
 
-def Print_Pin_Map(PinMap):
-    for PinNumber, Pin in enumerate(PinMap):
-        for Feature in Pin:
-            for Subfeature in Pin[Feature]:
-                for Channel in Pin[Feature][Subfeature]:
-                    print(f"Pin {PinNumber}\tFeature {Feature}\t{Subfeature}\tChannel {Channel}")
+def Print_Pin_Map(PinMaps):
+    for PinName, Features in PinMaps.items():
+        for Feature, Subfeatures in Features.items():
+            for Subfeature, Channels in Subfeatures.items():
+                for Channel in Channels:
+                    print(f"{[PinName, Feature, Subfeature, Channel]}")
 
 def Print_Solutions(Solutions):
-    for NetSolutions in Solutions:
-        for Solution in Solutions[NetSolutions]:
-            print(f"{NetSolutions} {Solution}")
-
-def Prune_Pin_Map(Solutions, PinMap):
-    NewPinMap = []
-    for PinNumber, Pin in enumerate(PinMap):
-        for Feature in Pin:
-            for Subfeature in Pin[Feature]:
-                for Channel in Pin[Feature][Subfeature]:
-                    KnownSolution = [PinNumber, Feature, Subfeature, Channel]
-                    for PinMapping in Generate_Pin_Mappings(MCU_Pins):
-                        if KnownSolution == PinMapping:
-                            NewPinMap.append()
-    print(NewPinMap)
-    return NewPinMap
+    for NetName in Solutions:
+        for AvailablePin in Solutions[NetName]:
+            print(f"{NetName}\t{AvailablePin}")
 
 MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
-# Print_Pin_Map(MCU_Pins)
-# print("*"*50)
-# Print_Solutions(MySolutions)
-Prune_Pin_Map(MySolutions, MCU_Pins)
+Print_Pin_Map(MCU_Pins)
+print("*"*50)
+Print_Solutions(MySolutions)
