@@ -8,87 +8,96 @@
 ExamplePin = [["Pin Number", {"GPIO":{"P500":["Read",], }, }], ]
 
 MCU_Pins = [
-    {
-        "GPIO":
+    [
+        "Pin 140",
         {
-            "P500":
-            [
-                "Read",
-                "Write",
-            ],
+            "GPIO":
+            {
+                "P500":
+                [
+                    "Read",
+                    "Write",
+                ],
+            },
+            "GPT":
+            {
+                "GTIOC11":
+                [
+                    "A",
+                ],
+            },
+            "ADC":
+            {
+                "ADC0":
+                [
+                    "AN016",
+                ],
+            },
         },
-        "GPT":
+    ],
+    [
+        "Pin 152",
         {
-            "GTIOC11":
-            [
-                "A",
-            ],
+            "GPIO":
+            {
+                "P014":
+                [
+                    "Read",
+                    "Write",
+                ],
+            },
+            "ADC":
+            {
+                "ADC0":
+                [
+                    "AN005",
+                ],
+                "ADC1":
+                [
+                    "AN105",
+                ],
+            },
         },
-        "ADC":
+    ],
+    [
+        "Pin 162",
         {
-            "ADC0":
-            [
-                "AN016",
-            ],
+            "GPIO":
+            {
+                "P007":
+                [
+                    "Read",
+                ],
+            },
+            "ADC":
+            {
+                "PGAVSS":
+                [
+                    "PGAVSS100",
+                ],
+                "ADC1":
+                [
+                    "AN107",
+                ],
+            },
         },
-    },
-    {
-        "GPIO":
         {
-            "P014":
-            [
-                "Read",
-                "Write",
-            ],
+            "Feature DeleteMe Eventually":
+            {
+                "Subfeature DeleteMe":
+                [
+                    "DeleteMe"
+                ],
+            },
+            "Feature DeleteMe":
+            {
+                "Subfeature DeleteMe":
+                [
+                    "DeleteMe"
+                ],
+            },
         },
-        "ADC":
-        {
-            "ADC0":
-            [
-                "AN005",
-            ],
-            "ADC1":
-            [
-                "AN105",
-            ],
-        },
-    },
-    {
-        "GPIO":
-        {
-            "P007":
-            [
-                "Read",
-            ],
-        },
-        "ADC":
-        {
-            "PGAVSS":
-            [
-                "PGAVSS100",
-            ],
-            "ADC1":
-            [
-                "AN107",
-            ],
-        },
-    },
-    {
-        "Feature DeleteMe Eventually":
-        {
-            "Subfeature DeleteMe":
-            [
-                "DeleteMe"
-            ],
-        },
-        "Feature DeleteMe":
-        {
-            "Subfeature DeleteMe":
-            [
-                "DeleteMe"
-            ],
-        },
-    },
+    ],
 ]
 
 Requirements = {
