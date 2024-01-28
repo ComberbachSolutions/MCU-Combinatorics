@@ -91,26 +91,36 @@ MCU_Pins = [
     },
 ]
 
-Requirements = [
-    [
-        "Indoor Temperature Signal",
-        ["ADC",],
-        ["ADC0","ADC1",],
-        ["",]
-    ],
-    [
-        "Air Damper 1 Tach Signal",
-        ["ADC",],
-        ["ADC0","ADC1",],
-        ["",]
-    ],
-    [
-        "Grundfos 2 Pressure Signal",
-        ["ADC",],
-        ["ADC0","ADC1",],
-        ["",]
-    ],
-]
+Requirements = {
+    "Indoor Temperature Signal":
+    {
+        "ADC":
+        {
+            "ADC0":[""],
+            "ADC1":[""],
+        }
+    },
+    "Air Damper 1 Tach Signal":
+    {
+        "ADC":
+        {
+            "ADC0":["",],
+            "ADC1":["",],
+        }
+    },
+    "Grundfos 2 Pressure Signal":
+    {
+        "ADC":
+        {
+            "ADC0":["AN005",],
+            "ADC1":["AN105",],
+        },
+        "GPIO":
+        {
+            "":["Write",]
+        }
+    },
+}
 
 def Remove_Channel(ChannelMap, Channel):
     ChannelMap.remove(Channel)
@@ -125,11 +135,11 @@ def Remove_Pin(PinMap, Pin):
     PinMap.remove(Pin)
 
 def Generate_Requirement(Requirements):
-    for NetName, RequiredFeatures, RequiredSubfeatures, RequiredChannels in Requirements:
-        for RequiredFeature in RequiredFeatures:
-            for RequiredSubfeature in RequiredSubfeatures:
-                for RequiredChannel in RequiredChannels:
-                    yield [NetName, RequiredFeature, RequiredSubfeature, RequiredChannel]
+    for NetName in Requirements:
+        for RequiredFeature in Requirements[NetName]:
+            for RequiredSubfeature in Requirements[NetName][RequiredFeature]:
+                for RequiredChannel in Requirements[NetName][RequiredFeature][RequiredSubfeature]:
+                    yield NetName, RequiredFeature, RequiredSubfeature, RequiredChannel
 
 def Find_Valid_Pins_For_Nets(Requirements, PinDefinition):
     ValidPins = []
