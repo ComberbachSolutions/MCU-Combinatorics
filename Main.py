@@ -98,7 +98,7 @@ Requirements = {
         {
             "ADC0":[""],
             "ADC1":[""],
-        }
+        },
     },
     "Air Damper 1 Tach Signal":
     {
@@ -106,7 +106,7 @@ Requirements = {
         {
             "ADC0":["",],
             "ADC1":["",],
-        }
+        },
     },
     "Grundfos 2 Pressure Signal":
     {
@@ -118,7 +118,7 @@ Requirements = {
         "GPIO":
         {
             "":["Write",]
-        }
+        },
     },
 }
 
@@ -141,11 +141,12 @@ def Generate_Requirement(Requirements):
                 for RequiredChannel in Requirements[NetName][RequiredFeature][RequiredSubfeature]:
                     yield NetName, RequiredFeature, RequiredSubfeature, RequiredChannel
 
-def Find_Valid_Pins_For_Nets(Requirements, PinDefinition):
-    ValidPins = []
-    Pins = PinDefinition.copy()
+def Find_Valid_Pins_For_Nets(Requirements, Pins):
+    ValidPins = {}
+    for NetName in Requirements:
+        ValidPins[NetName] = []
+
     for NetName, RequiredFeature, RequiredSubfeature, RequiredChannel in Generate_Requirement(Requirements):
-        ValidOptions = 0
         for PinNumber, Features in enumerate(Pins):
             for Feature, SubFeatures in Features.items():
                 if Feature != RequiredFeature:
@@ -156,15 +157,19 @@ def Find_Valid_Pins_For_Nets(Requirements, PinDefinition):
                     for Channel in Channels:
                         if Channel != RequiredChannel and RequiredChannel != "":
                             continue
-                        ValidPins.append(f"{NetName} on Pin {PinNumber} using feature {Feature}, subfeature {SubFeature}, and channel {Channel}")
-                        ValidOptions += 1
-        if ValidOptions == 0:
-            print(f"Net {NetName} does not have any valid pins available to it")
-    
+                        ValidPins[NetName].append([PinNumber, Feature, SubFeature, Channel])
+
+    for Net in ValidPins:
+        if len(ValidPins[Net]) == 0:
+            print("*"*50)
+            print(f"Net '{NetName}' does not have any valid pins available to it")
+            print("*"*50)
+
     return ValidPins
 
 MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
 print("*"*50)
-for Solution in MySolutions:
-    print(Solution)
+for NetName in MySolutions:
+    for Solution in MySolutions[NetName]:
+        print(f"{NetName}: Pin {Solution[0]} using {Solution[3]} of {Solution[2]} which is a function of {Solution[1]}")
 print("*"*50)
