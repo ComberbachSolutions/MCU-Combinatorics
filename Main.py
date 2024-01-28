@@ -1,3 +1,9 @@
+# Ideas for future functionality:
+#   Add "NotFeature", "NotSubfeature", and "NotChannel" functionality
+#       Specify functionality which must be avoided
+#   Add "MustMatchFeature", "MustMatchSubfeature", and "MustMatchChannel" functionality
+#       This can be used to keep matched nets on the same feature/subfeature/channel
+
 # Function (Interchangeable)
 #   eg. ADC
 # Sub Function (Interchangeable/Specific)
