@@ -5,7 +5,7 @@
 # Channel (Specific)
 #   AN001, AN002, AN100, etc
 
-ExamplePin = {"ADC":{"ADC0":["AN001"], "ADC1":["AN001"]}, "GPT":{"GPT5":["A"]}}
+ExamplePin = [["Pin Number", {"GPIO":{"P500":["Read",], }, }], ]
 
 MCU_Pins = [
     {
@@ -141,6 +141,13 @@ def Generate_Requirement(Requirements):
                 for RequiredChannel in Requirements[NetName][RequiredFeature][RequiredSubfeature]:
                     yield NetName, RequiredFeature, RequiredSubfeature, RequiredChannel
 
+def Generate_Pin_Mappings(PinMap):
+    for PinNumber, Pin in enumerate(PinMap):
+        for Feature in Pin:
+            for Subfeature in Pin[Feature]:
+                for Channel in Pin[Feature][Subfeature]:
+                    yield [PinNumber, Feature, Subfeature, Channel]
+
 def Find_Valid_Pins_For_Nets(Requirements, Pins):
     ValidPins = {}
     for NetName in Requirements:
@@ -167,9 +174,33 @@ def Find_Valid_Pins_For_Nets(Requirements, Pins):
 
     return ValidPins
 
+def Print_Pin_Map(PinMap):
+    for PinNumber, Pin in enumerate(PinMap):
+        for Feature in Pin:
+            for Subfeature in Pin[Feature]:
+                for Channel in Pin[Feature][Subfeature]:
+                    print(f"Pin {PinNumber}\tFeature {Feature}\t{Subfeature}\tChannel {Channel}")
+
+def Print_Solutions(Solutions):
+    for NetSolutions in Solutions:
+        for Solution in Solutions[NetSolutions]:
+            print(f"{NetSolutions} {Solution}")
+
+def Prune_Pin_Map(Solutions, PinMap):
+    NewPinMap = []
+    for PinNumber, Pin in enumerate(PinMap):
+        for Feature in Pin:
+            for Subfeature in Pin[Feature]:
+                for Channel in Pin[Feature][Subfeature]:
+                    KnownSolution = [PinNumber, Feature, Subfeature, Channel]
+                    for PinMapping in Generate_Pin_Mappings(MCU_Pins):
+                        if KnownSolution == PinMapping:
+                            NewPinMap.append()
+    print(NewPinMap)
+    return NewPinMap
+
 MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
-print("*"*50)
-for NetName in MySolutions:
-    for Solution in MySolutions[NetName]:
-        print(f"{NetName}: Pin {Solution[0]} using {Solution[3]} of {Solution[2]} which is a function of {Solution[1]}")
-print("*"*50)
+# Print_Pin_Map(MCU_Pins)
+# print("*"*50)
+# Print_Solutions(MySolutions)
+Prune_Pin_Map(MySolutions, MCU_Pins)
