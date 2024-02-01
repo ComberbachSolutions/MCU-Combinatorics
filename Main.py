@@ -240,10 +240,29 @@ def Print_Solutions(Solutions):
         for AvailablePin in Solutions[NetName]:
             print(f"{NetName}\t{AvailablePin}")
 
-MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
-Print_Pin_Map(MCU_Pins)
-def Find_Solutions(SolutionList):
+def Print_Full_Solution(outputs):
+    print("*"*50)
+    for index, output in enumerate(outputs):
+        test = set()
+        for net, pin in output.items():
+            test.add(pin[0])
+            print(f"{net}\t{pin}")
+        print("*"*50)
+
+def Find_All_Solutions(SolutionList):
     combinations = list(product(*SolutionList.values()))
     return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
-print("*"*50)
-Print_Solutions(MySolutions)
+
+def Find_All_Valid_Solutions(SolutionList):
+    AllSolutions = Find_All_Solutions(SolutionList)
+    for PotentialSolution in reversed(AllSolutions):
+        SolutionValidityTest = set()
+        for net, pin in PotentialSolution.items():
+            SolutionValidityTest.add(pin[0])
+        if len(SolutionValidityTest) < 3:
+            AllSolutions.remove(PotentialSolution)
+    return AllSolutions
+
+MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
+ValidSolutions = Find_All_Valid_Solutions(MySolutions)
+Print_Full_Solution(ValidSolutions)
