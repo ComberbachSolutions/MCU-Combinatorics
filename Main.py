@@ -18,9 +18,9 @@ ExamplePin = {
         "Feature":
         {
             "Subfeature":
-            [
-                "Channel",
-            ],
+            {
+                "Channel":"Subchannel",
+            },
         },
     },
 }
@@ -31,9 +31,9 @@ ExampleRequirements = {
         "Feature":
         {
             "Subfeature":
-            [
-                "Channel"
-            ],
+            {
+                "Channel":"Subchannel"
+            },
         },
     },
 }
@@ -44,24 +44,24 @@ MCU_Pins = {
         "GPIO":
         {
             "P500":
-            [
-                "Read",
-                "Write",
-            ],
+            {
+                "Read":"",
+                "Write":"",
+            },
         },
         "GPT":
         {
             "GTIOC11":
-            [
-                "A",
-            ],
+            {
+                "A":"",
+            },
         },
         "ADC":
         {
             "ADC0":
-            [
-                "AN016",
-            ],
+            {
+                "AN016":"",
+            },
         },
     },
     "Pin 152":
@@ -69,21 +69,21 @@ MCU_Pins = {
         "GPIO":
         {
             "P014":
-            [
-                "Read",
-                "Write",
-            ],
+            {
+                "Read":"",
+                "Write":"",
+            },
         },
         "ADC":
         {
             "ADC0":
-            [
-                "AN005",
-            ],
+            {
+                "AN005":"",
+            },
             "ADC1":
-            [
-                "AN105",
-            ],
+            {
+                "AN105":"",
+            },
         },
     },
     "Pin 162":
@@ -91,20 +91,20 @@ MCU_Pins = {
         "GPIO":
         {
             "P007":
-            [
-                "Read",
-            ],
+            {
+                "Read":"",
+            },
         },
         "ADC":
         {
             "PGAVSS":
-            [
-                "PGAVSS100",
-            ],
+            {
+                "PGAVSS100":"",
+            },
             "ADC1":
-            [
-                "AN107",
-            ],
+            {
+                "AN107":"",
+            },
         },
     },
     "Pin Deleteable":
@@ -112,17 +112,17 @@ MCU_Pins = {
         "Feature DeleteMe Eventually":
         {
             "Subfeature":
-            [
-                "Channel"
-            ],
+            {
+                "Channel":""
+            },
         },
         "Feature DeleteMe":
         {
             "Subfeature DeleteMe":
-            [
-                "DeleteMe",
-                "Channel"
-            ],
+            {
+                "DeleteMe":"",
+                "Channel":"",
+            },
         },
     },
 }
@@ -136,20 +136,12 @@ Requirements = {
             [
                 ""
             ],
-            "ADC1":
-            [
-                ""
-            ],
         },
     },
     "Air Damper 1 Tach Signal":
     {
         "ADC":
         {
-            "ADC0":
-            [
-                "",
-            ],
             "ADC1":
             [
                 "",
@@ -158,17 +150,6 @@ Requirements = {
     },
     "Grundfos 2 Pressure Signal":
     {
-        "ADC":
-        {
-            "ADC0":
-            [
-                "AN005",
-            ],
-            "ADC1":
-            [
-                "AN105",
-            ],
-        },
         "GPIO":
         {
             "":
@@ -263,6 +244,21 @@ def Find_All_Valid_Solutions(SolutionList):
             AllSolutions.remove(PotentialSolution)
     return AllSolutions
 
-MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
-ValidSolutions = Find_All_Valid_Solutions(MySolutions)
-Print_Full_Solution(ValidSolutions)
+def Another_Way(MultiDict, CurrentPath=[]):
+    Paths = []
+    for Key, Value in MultiDict.items():
+        new_path = CurrentPath + [Key]
+        if isinstance(Value, dict):
+            Paths.extend(Another_Way(Value, new_path))
+        elif Value != "":
+            Paths.append(new_path + [Value])
+        else:
+            Paths.append(new_path)
+    return Paths
+
+# MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
+# ValidSolutions = Find_All_Valid_Solutions(MySolutions)
+# Print_Full_Solution(ValidSolutions)
+
+durp = Another_Way(MCU_Pins)
+print(durp)
