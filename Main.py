@@ -10,6 +10,7 @@
 #   eg. ADC0 or ADC1
 # Channel (Specific)
 #   AN001, AN002, AN100, etc
+from itertools import product
 
 ExamplePin = {
     "Pin Unique ID":
@@ -241,5 +242,8 @@ def Print_Solutions(Solutions):
 
 MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
 Print_Pin_Map(MCU_Pins)
+def Find_Solutions(SolutionList):
+    combinations = list(product(*SolutionList.values()))
+    return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
 print("*"*50)
 Print_Solutions(MySolutions)
