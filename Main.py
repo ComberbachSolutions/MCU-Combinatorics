@@ -256,10 +256,10 @@ def Find_All_Solutions(SolutionList):
 def Find_All_Valid_Solutions(SolutionList):
     AllSolutions = Find_All_Solutions(SolutionList)
     for PotentialSolution in reversed(AllSolutions):
-        SolutionValidityTest = set()
+        SolutionValidityTest = []
         for net, pin in PotentialSolution.items():
-            SolutionValidityTest.add(pin[0])
-        if len(SolutionValidityTest) < 3:
+            SolutionValidityTest.extend([pin[0]])
+        if len(SolutionValidityTest) != len(set(SolutionValidityTest)):
             AllSolutions.remove(PotentialSolution)
     return AllSolutions
 
