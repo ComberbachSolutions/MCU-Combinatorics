@@ -180,20 +180,28 @@ def Find_Potential_Solutions(Definitions, Requirements):
                 print("*"*50)
                 print(Requirement)
                 print(f"{Definition}")
+    print("*"*50)
     return PinSolutions
 
+def Find_All_Solutions(SolutionList):
+    combinations = list(product(*SolutionList.values()))
+    return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
 
-# Print_Titled_Section("MCU List", Convert_Multidictionary_To_Lists(MCU_Pins))
-# Print_Titled_Section("Reqs List", Convert_Multidictionary_To_Lists(Requirements))
-# print("*"*50)
+def Find_All_Valid_Solutions(SolutionList):
+    AllSolutions = Find_All_Solutions(SolutionList)
+    for PotentialSolution in reversed(AllSolutions):
+        SolutionValidityTest = []
+        for net, pin in PotentialSolution.items():
+            SolutionValidityTest.extend([pin[0]])
+        if len(SolutionValidityTest) != len(set(SolutionValidityTest)):
+            AllSolutions.remove(PotentialSolution)
+    return AllSolutions
+
 MCU_Pins = Convert_Multidictionary_To_Lists(MCU_Pins)
 Requirements = Convert_Multidictionary_To_Lists(Requirements)
-potentials = Find_Potential_Solutions(MCU_Pins, Requirements)
-
-print("*"*50)
-for potential in potentials.items():
-    for subpotential in potential:
-        print(subpotential)
+MySolutions = Find_Potential_Solutions(MCU_Pins, Requirements)
+ValidSolutions = Find_All_Valid_Solutions(MySolutions)
+print(ValidSolutions)
 
 # *******************************************************
 # Desired output, same string but formatted differently.
