@@ -107,24 +107,6 @@ MCU_Pins = {
             },
         },
     },
-    "Pin Deleteable":
-    {
-        "Feature DeleteMe Eventually":
-        {
-            "Subfeature":
-            {
-                "Channel":""
-            },
-        },
-        "Feature DeleteMe":
-        {
-            "Subfeature DeleteMe":
-            {
-                "DeleteMe":"",
-                "Channel":"",
-            },
-        },
-    },
 }
 
 Requirements = {
@@ -132,20 +114,14 @@ Requirements = {
     {
         "ADC":
         {
-            "ADC0":
-            [
-                ""
-            ],
+            "ADC0":""
         },
     },
     "Air Damper 1 Tach Signal":
     {
         "ADC":
         {
-            "ADC1":
-            [
-                "",
-            ],
+            "ADC1":""
         },
     },
     "Grundfos 2 Pressure Signal":
@@ -153,112 +129,86 @@ Requirements = {
         "GPIO":
         {
             "":
-            [
-                "Write",
-            ]
+            {
+                "Write":"",
+            }
         },
     },
 }
 
-def Remove_Channel(ChannelMap, Channel):
-    ChannelMap.remove(Channel)
+def Print_Titled_Section(text, section):
+    print(f"{'*'*25}{text}{'*'*25}")
+    print(section)
 
-def Remove_Subfeature(SubfeatureMap, SubFeature):
-    del SubfeatureMap[SubFeature]
-
-def Remove_Feature(PinMap, Feature):
-    del PinMap[Feature]
-
-def Remove_Pin(PinMaps, Pin):
-    del PinMaps[Pin]
-
-def Generate_Requirement(Requirements):
-    for NetName in Requirements:
-        for RequiredFeature in Requirements[NetName]:
-            for RequiredSubfeature in Requirements[NetName][RequiredFeature]:
-                for RequiredChannel in Requirements[NetName][RequiredFeature][RequiredSubfeature]:
-                    yield NetName, RequiredFeature, RequiredSubfeature, RequiredChannel
-
-def Generate_Pin_Mappings(PinMaps):
-    for PinName, Features in PinMaps.items():
-        for Feature, Subfeatures in Features.items():
-            for Subfeature, Channels in Subfeatures.items():
-                for Channel in Channels:
-                    yield [PinName, Feature, Subfeature, Channel]
-
-def Find_Valid_Pins_For_Nets(Requirements, PinMaps):
-    ValidPins = {}
-    for NetName in Requirements:
-        ValidPins[NetName] = []
-    for NetName, RequiredFeature, RequiredSubfeature, RequiredChannel in Generate_Requirement(Requirements):
-        for PinName, Features in PinMaps.items():
-            for Feature, Subfeatures in Features.items():
-                if Feature != RequiredFeature:
-                    continue
-                for Subfeature, Channels in Subfeatures.items():
-                    if Subfeature != RequiredSubfeature and RequiredSubfeature != "":
-                        continue
-                    for Channel in Channels:
-                        if Channel != RequiredChannel and RequiredChannel != "":
-                            continue
-                        ValidPins[NetName].append([PinName, Feature, Subfeature, Channel])
-    for Net in ValidPins:
-        if len(ValidPins[Net]) == 0:
-            print("*"*50)
-            print(f"Net '{NetName}' does not have any valid pins available to it")
-            print("*"*50)
-    return ValidPins
-
-def Print_Pin_Map(PinMaps):
-    for PinName, Features in PinMaps.items():
-        for Feature, Subfeatures in Features.items():
-            for Subfeature, Channels in Subfeatures.items():
-                for Channel in Channels:
-                    print(f"{[PinName, Feature, Subfeature, Channel]}")
-
-def Print_Solutions(Solutions):
-    for NetName in Solutions:
-        for AvailablePin in Solutions[NetName]:
-            print(f"{NetName}\t{AvailablePin}")
-
-def Print_Full_Solution(outputs):
-    print("*"*50)
-    for index, output in enumerate(outputs):
-        test = set()
-        for net, pin in output.items():
-            test.add(pin[0])
-            print(f"{net}\t{pin}")
-        print("*"*50)
-
-def Find_All_Solutions(SolutionList):
-    combinations = list(product(*SolutionList.values()))
-    return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
-
-def Find_All_Valid_Solutions(SolutionList):
-    AllSolutions = Find_All_Solutions(SolutionList)
-    for PotentialSolution in reversed(AllSolutions):
-        SolutionValidityTest = []
-        for net, pin in PotentialSolution.items():
-            SolutionValidityTest.extend([pin[0]])
-        if len(SolutionValidityTest) != len(set(SolutionValidityTest)):
-            AllSolutions.remove(PotentialSolution)
-    return AllSolutions
-
-def Another_Way(MultiDict, CurrentPath=[]):
+def Convert_Multidictionary_To_Lists(Multidictionary, CurrentPath=[]):
     Paths = []
-    for Key, Value in MultiDict.items():
+    for Key, Value in Multidictionary.items():
         new_path = CurrentPath + [Key]
         if isinstance(Value, dict):
-            Paths.extend(Another_Way(Value, new_path))
+            Paths.extend(Convert_Multidictionary_To_Lists(Value, new_path))
         elif Value != "":
             Paths.append(new_path + [Value])
         else:
             Paths.append(new_path)
     return Paths
 
-# MySolutions = Find_Valid_Pins_For_Nets(Requirements, MCU_Pins)
-# ValidSolutions = Find_All_Valid_Solutions(MySolutions)
-# Print_Full_Solution(ValidSolutions)
+def compare_lists_ignore_first(list1, list2):
+    # Exclude the first element from each list
+    sublist1 = list1[1:]
+    sublist2 = list2[1:]
+    
+    # Determine the length of the shorter list (excluding the first element)
+    ShortestList = min(len(sublist1), len(sublist2))
+    
+    # Compare elements from the beginning to the shorter length
+    for Index in range(ShortestList):
+        # Treat "" as a wildcard match
+        if sublist1[Index] != sublist2[Index] and "" not in (sublist1[Index], sublist2[Index]):
+            return False
 
-durp = Another_Way(MCU_Pins)
-print(durp)
+    # If we reach this point, all compared elements are considered matches,
+    # and any extra elements in the longer list are automatically considered matches.
+    return True
+
+def Find_Potential_Solutions(Definitions, Requirements):
+    PinSolutions = {}
+    for Requirement in Requirements:
+        PinSolutions[Requirement[0]] = []
+        for Definition in Definitions:
+            if compare_lists_ignore_first(Requirement, Definition) == True:
+                PinSolutions[Requirement[0]].append(Definition)
+                print("*"*50)
+                print(Requirement)
+                print(f"{Definition}")
+    return PinSolutions
+
+
+# Print_Titled_Section("MCU List", Convert_Multidictionary_To_Lists(MCU_Pins))
+# Print_Titled_Section("Reqs List", Convert_Multidictionary_To_Lists(Requirements))
+# print("*"*50)
+MCU_Pins = Convert_Multidictionary_To_Lists(MCU_Pins)
+Requirements = Convert_Multidictionary_To_Lists(Requirements)
+potentials = Find_Potential_Solutions(MCU_Pins, Requirements)
+
+print("*"*50)
+for potential in potentials.items():
+    for subpotential in potential:
+        print(subpotential)
+
+# *******************************************************
+# Desired output, same string but formatted differently.
+[{'Indoor Temperature Signal': ['Pin 140', 'ADC', 'ADC0', 'AN016'], 'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'], 'Grundfos 2 Pressure Signal': ['Pin 152', 'GPIO', 'P014', 'Write']}, {'Indoor Temperature Signal': ['Pin 152', 'ADC', 'ADC0', 'AN005'], 'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'], 'Grundfos 2 Pressure Signal': ['Pin 140', 'GPIO', 'P500', 'Write']}]
+[
+    {
+        'Indoor Temperature Signal': ['Pin 140', 'ADC', 'ADC0', 'AN016'],
+        'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'],
+        'Grundfos 2 Pressure Signal': ['Pin 152', 'GPIO', 'P014', 'Write']
+    },
+    {
+        'Indoor Temperature Signal': ['Pin 152', 'ADC', 'ADC0', 'AN005'],
+        'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'],
+        'Grundfos 2 Pressure Signal': ['Pin 140', 'GPIO', 'P500', 'Write']
+    }
+]
+# *******************************************************
+
