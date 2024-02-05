@@ -4,12 +4,6 @@
 #   Add "MustMatchFeature", "MustMatchSubfeature", and "MustMatchChannel" functionality
 #       This can be used to keep matched nets on the same feature/subfeature/channel
 
-# Function (Interchangeable)
-#   eg. ADC
-# Sub Function (Interchangeable/Specific)
-#   eg. ADC0 or ADC1
-# Channel (Specific)
-#   AN001, AN002, AN100, etc
 from itertools import product
 
 ExamplePin = {
@@ -19,7 +13,10 @@ ExamplePin = {
         {
             "Subfeature":
             {
-                "Channel":"Subchannel",
+                "Channel":
+                {
+                    "Subchannel":"",
+                },
             },
         },
     },
@@ -32,13 +29,16 @@ ExampleRequirements = {
         {
             "Subfeature":
             {
-                "Channel":"Subchannel"
+                "Channel":
+                {
+                    "Subchannel":"",
+                },
             },
         },
     },
 }
 
-MCU_Pins = {
+Definitions = {
     "Pin 140":
     {
         "GPIO":
@@ -136,38 +136,35 @@ Requirements = {
     },
 }
 
-def Print_Titled_Section(text, section):
-    print(f"{'*'*25}{text}{'*'*25}")
-    print(section)
-
-def Convert_Multidictionary_To_Lists(Multidictionary, CurrentPath=[]):
+def Expand_Dictionary(Multidictionary, CurrentPath=[]):
+    # This is a recursive function that reduces a dictionary of dictionaries to a list of all the key values along each path
     Paths = []
     for Key, Value in Multidictionary.items():
         new_path = CurrentPath + [Key]
         if isinstance(Value, dict):
-            Paths.extend(Convert_Multidictionary_To_Lists(Value, new_path))
+            Paths.extend(Expand_Dictionary(Value, new_path))
         elif Value != "":
             Paths.append(new_path + [Value])
         else:
             Paths.append(new_path)
     return Paths
 
-def compare_lists_ignore_first(list1, list2):
-    # Exclude the first element from each list
-    sublist1 = list1[1:]
-    sublist2 = list2[1:]
+def Definition_Satisfies_Requirement(Definition, Requirement):
+    # First element is the Definition and Requirment IDs, ignore these for matching purposes
+    Definition = Definition[1:]
+    Requirement = Requirement[1:]
     
-    # Determine the length of the shorter list (excluding the first element)
-    ShortestList = min(len(sublist1), len(sublist2))
+    # Search only to a depth of the shortest list
+    ShortestList = min(len(Definition), len(Requirement))
     
-    # Compare elements from the beginning to the shorter length
+    # Compare Definitions to Requirements
     for Index in range(ShortestList):
-        # Treat "" as a wildcard match
-        if sublist1[Index] != sublist2[Index] and "" not in (sublist1[Index], sublist2[Index]):
-            return False
-
-    # If we reach this point, all compared elements are considered matches,
-    # and any extra elements in the longer list are automatically considered matches.
+        # The empty string "" is a wildcard match
+        if Definition[Index] != Requirement[Index] and \
+            "" not in (Definition[Index], Requirement[Index]):
+            # The Definition does not meet the Requirement
+                return False
+    # The Definition meets the Requirement
     return True
 
 def Find_Potential_Solutions(Definitions, Requirements):
@@ -175,12 +172,8 @@ def Find_Potential_Solutions(Definitions, Requirements):
     for Requirement in Requirements:
         PinSolutions[Requirement[0]] = []
         for Definition in Definitions:
-            if compare_lists_ignore_first(Requirement, Definition) == True:
+            if Definition_Satisfies_Requirement(Definition, Requirement) == True:
                 PinSolutions[Requirement[0]].append(Definition)
-                print("*"*50)
-                print(Requirement)
-                print(f"{Definition}")
-    print("*"*50)
     return PinSolutions
 
 def Find_All_Solutions(SolutionList):
@@ -197,26 +190,17 @@ def Find_All_Valid_Solutions(SolutionList):
             AllSolutions.remove(PotentialSolution)
     return AllSolutions
 
-MCU_Pins = Convert_Multidictionary_To_Lists(MCU_Pins)
-Requirements = Convert_Multidictionary_To_Lists(Requirements)
-MySolutions = Find_Potential_Solutions(MCU_Pins, Requirements)
-ValidSolutions = Find_All_Valid_Solutions(MySolutions)
-print(ValidSolutions)
+def Print_Full_Solution_List(outputs):
+    for index, output in enumerate(outputs):
+        print(f"{'*'*25} Option {index} {'*'*25}")
+        test = set()
+        for net, pin in output.items():
+            test.add(pin[0])
+            print(f"{net}\t{pin}")
+    print("*"*50)
 
-# *******************************************************
-# Desired output, same string but formatted differently.
-[{'Indoor Temperature Signal': ['Pin 140', 'ADC', 'ADC0', 'AN016'], 'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'], 'Grundfos 2 Pressure Signal': ['Pin 152', 'GPIO', 'P014', 'Write']}, {'Indoor Temperature Signal': ['Pin 152', 'ADC', 'ADC0', 'AN005'], 'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'], 'Grundfos 2 Pressure Signal': ['Pin 140', 'GPIO', 'P500', 'Write']}]
-[
-    {
-        'Indoor Temperature Signal': ['Pin 140', 'ADC', 'ADC0', 'AN016'],
-        'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'],
-        'Grundfos 2 Pressure Signal': ['Pin 152', 'GPIO', 'P014', 'Write']
-    },
-    {
-        'Indoor Temperature Signal': ['Pin 152', 'ADC', 'ADC0', 'AN005'],
-        'Air Damper 1 Tach Signal': ['Pin 162', 'ADC', 'ADC1', 'AN107'],
-        'Grundfos 2 Pressure Signal': ['Pin 140', 'GPIO', 'P500', 'Write']
-    }
-]
-# *******************************************************
-
+Definitions = Expand_Dictionary(Definitions)
+Requirements = Expand_Dictionary(Requirements)
+PotentialSolutions = Find_Potential_Solutions(Definitions, Requirements)
+ValidSolutions = Find_All_Valid_Solutions(PotentialSolutions)
+Print_Full_Solution_List(ValidSolutions)
