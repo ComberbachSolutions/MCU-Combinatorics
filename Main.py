@@ -11,47 +11,7 @@ import ImportFromCSV
 
 Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
 
-Requirements = {
-    "Indoor Temperature Signal":
-    {
-        "ADC":
-        {
-            "ADC0":
-            {
-                "5":"",
-            },
-        },
-    },
-    "Air Damper 1 Tach Signal":
-    {
-        "ADC":
-        {
-            "ADC0":
-            {
-                "1":"",
-                "2":"",
-            },
-            "ADC1":
-            {
-                "1":"",
-                "2":"",
-            },
-        },
-    },
-    "Grundfos 2 Pressure Signal":
-    {
-        "GPIO":
-        {
-            "Port7":
-            {
-                "3":
-                {
-                    "Write":"",
-                },
-            },
-        },
-    },
-}
+Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
 
 def Expand_Dictionary(Multidictionary, CurrentPath=[]):
     # This is a recursive function that reduces a dictionary of dictionaries to a list of all the key values along each path

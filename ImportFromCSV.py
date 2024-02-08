@@ -38,3 +38,13 @@ if __name__ == "__main__":
             print(f"\t{Function}")
 
     write_dict_to_file(nested_dict_result, 'RA6M3 LQFP176 Pinout.JSON')
+
+    nested_dict_result = csv_file_to_dict('MUA Requirements.csv')
+    print(nested_dict_result)
+
+    for Name, Functions in nested_dict_result.items():
+        print(Name, end="")
+        for Function in Functions.items():
+            print(f"\t{Function}")
+
+    write_dict_to_file(nested_dict_result, 'MUA Requirements.JSON')
