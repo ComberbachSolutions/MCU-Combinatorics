@@ -80,6 +80,8 @@ def Definition_Satisfies_Requirement(Definition, Requirement):
     return True
 
 def Find_Potential_Solutions(Definitions, Requirements):
+    Definitions = Expand_Dictionary(Definitions)
+    Requirements = Expand_Dictionary(Requirements)
     PinSolutions = {}
     for Requirement in Requirements:
         # Check if the requirement ID already exists in the solutions dictionary
@@ -94,7 +96,8 @@ def Find_All_Solutions(SolutionList):
     combinations = list(product(*SolutionList.values()))
     return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
 
-def Find_All_Valid_Solutions(SolutionList):
+def Find_All_Valid_Solutions(Definitions, Requirements):
+    SolutionList = Find_Potential_Solutions(Definitions, Requirements)
     AllSolutions = Find_All_Solutions(SolutionList)
     for PotentialSolution in reversed(AllSolutions):
         SolutionValidityTest = []
@@ -113,8 +116,5 @@ def Print_Full_Solution_List(outputs):
             print(f"{net}\t{pin}")
     print("*"*50)
 
-Definitions = Expand_Dictionary(Definitions)
-Requirements = Expand_Dictionary(Requirements)
-PotentialSolutions = Find_Potential_Solutions(Definitions, Requirements)
-ValidSolutions = Find_All_Valid_Solutions(PotentialSolutions)
+ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
 Print_Full_Solution_List(ValidSolutions)
