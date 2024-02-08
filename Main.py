@@ -62,7 +62,7 @@ def Expand_Dictionary(Multidictionary, CurrentPath=[]):
     return Paths
 
 def Definition_Satisfies_Requirement(Definition, Requirement):
-    # First element is the Definition and Requirment IDs, ignore these for matching purposes
+    # First element is the Definition and Requirement IDs, ignore these for matching purposes
     Definition = Definition[1:]
     Requirement = Requirement[1:]
     
@@ -82,7 +82,9 @@ def Definition_Satisfies_Requirement(Definition, Requirement):
 def Find_Potential_Solutions(Definitions, Requirements):
     PinSolutions = {}
     for Requirement in Requirements:
-        PinSolutions[Requirement[0]] = []
+        # Check if the requirement ID already exists in the solutions dictionary
+        if Requirement[0] not in PinSolutions:
+            PinSolutions[Requirement[0]] = []
         for Definition in Definitions:
             if Definition_Satisfies_Requirement(Definition, Requirement) == True:
                 PinSolutions[Requirement[0]].append(Definition)
