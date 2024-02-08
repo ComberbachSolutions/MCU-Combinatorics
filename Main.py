@@ -5,133 +5,45 @@
 #       This can be used to keep matched nets on the same feature/subfeature/channel
 
 from itertools import product
+import ImportFromCSV
 
-ExamplePin = {
-    "Pin Unique ID":
-    {
-        "Feature":
-        {
-            "Subfeature":
-            {
-                "Channel":
-                {
-                    "Subchannel":"",
-                },
-            },
-        },
-    },
-}
 
-ExampleRequirements = {
-    "Net Name":
-    {
-        "Feature":
-        {
-            "Subfeature":
-            {
-                "Channel":
-                {
-                    "Subchannel":"",
-                },
-            },
-        },
-    },
-}
 
-Definitions = {
-    "Pin 140":
-    {
-        "GPIO":
-        {
-            "P500":
-            {
-                "Read":"",
-                "Write":"",
-            },
-        },
-        "GPT":
-        {
-            "GTIOC11":
-            {
-                "A":"",
-            },
-        },
-        "ADC":
-        {
-            "ADC0":
-            {
-                "AN016":"",
-            },
-        },
-    },
-    "Pin 152":
-    {
-        "GPIO":
-        {
-            "P014":
-            {
-                "Read":"",
-                "Write":"",
-            },
-        },
-        "ADC":
-        {
-            "ADC0":
-            {
-                "AN005":"",
-            },
-            "ADC1":
-            {
-                "AN105":"",
-            },
-        },
-    },
-    "Pin 162":
-    {
-        "GPIO":
-        {
-            "P007":
-            {
-                "Read":"",
-            },
-        },
-        "ADC":
-        {
-            "PGAVSS":
-            {
-                "PGAVSS100":"",
-            },
-            "ADC1":
-            {
-                "AN107":"",
-            },
-        },
-    },
-}
+Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
 
 Requirements = {
     "Indoor Temperature Signal":
     {
         "ADC":
         {
-            "ADC0":""
+            "ADC0":
+            {
+                "5":"",
+            },
         },
     },
     "Air Damper 1 Tach Signal":
     {
         "ADC":
         {
-            "ADC1":""
+            "":
+            {
+                "1":"",
+                "2":"",
+            },
         },
     },
     "Grundfos 2 Pressure Signal":
     {
         "GPIO":
         {
-            "":
+            "Port7":
             {
-                "Write":"",
-            }
+                "3":
+                {
+                    "Write":"",
+                },
+            },
         },
     },
 }
