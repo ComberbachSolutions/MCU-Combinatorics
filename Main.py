@@ -57,7 +57,7 @@ def Find_Potential_Solutions(Definitions, Requirements):
                 PinSolutions[Requirement[0]].append(Definition)
     return PinSolutions
 
-def Find_All_Solutions(SolutionList):
+def Generate_Next_Solutions(SolutionList):
     ErrorInData = False
     for Key, Value in SolutionList.items():
         if Value == []:
@@ -65,21 +65,24 @@ def Find_All_Solutions(SolutionList):
             ErrorInData = True
     if ErrorInData == True:
         return []
-    combinations = list(product(*SolutionList.values()))
-    return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
+    for combo in product(*SolutionList.values()):
+        yield {key: value for key, value in zip(SolutionList.keys(), combo)}
 
 def Find_All_Valid_Solutions(Definitions, Requirements):
+    AllSolutions = []
+    iteration = 0
     print(f"{'*'*36} Start {'*'*37}")
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
     print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
-    AllSolutions = Find_All_Solutions(SolutionList)
-    print(f"{'*'*27} Find_All_Solutions Done {'*'*28}")
-    for PotentialSolution in reversed(AllSolutions):
+    for PotentialSolution in Generate_Next_Solutions(SolutionList):
         SolutionValidityTest = []
         for net, pin in PotentialSolution.items():
             SolutionValidityTest.extend([pin[0]])
-        if len(SolutionValidityTest) != len(set(SolutionValidityTest)):
-            AllSolutions.remove(PotentialSolution)
+        if len(SolutionValidityTest) == len(set(SolutionValidityTest)):
+            AllSolutions.append(PotentialSolution)
+            print(PotentialSolution)
+        print(f"Iteration {iteration}\n", end="")
+        iteration += 1
     print(f"{'*'*24} Find_All_Valid_Solutions Done {'*'*25}")
     return AllSolutions
 
