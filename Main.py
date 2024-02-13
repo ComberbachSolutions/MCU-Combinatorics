@@ -58,6 +58,13 @@ def Find_Potential_Solutions(Definitions, Requirements):
     return PinSolutions
 
 def Find_All_Solutions(SolutionList):
+    ErrorInData = False
+    for Key, Value in SolutionList.items():
+        if Value == []:
+            print(f"Error on {Key} - {Value}")
+            ErrorInData = True
+    if ErrorInData == True:
+        return []
     combinations = list(product(*SolutionList.values()))
     return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
 
