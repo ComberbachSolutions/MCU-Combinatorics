@@ -9,10 +9,6 @@ import ImportFromCSV
 
 
 
-Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
-
-Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
-
 def Expand_Dictionary(Multidictionary, CurrentPath=[]):
     # This is a recursive function that reduces a dictionary of dictionaries to a list of all the key values along each path
     Paths = []
@@ -57,7 +53,7 @@ def Find_Potential_Solutions(Definitions, Requirements):
                 PinSolutions[Requirement[0]].append(Definition)
     return PinSolutions
 
-def Generate_Next_Solutions(SolutionList):
+def Generate_Next_Solution(SolutionList):
     ErrorInData = False
     for Key, Value in SolutionList.items():
         if Value == []:
@@ -74,7 +70,7 @@ def Find_All_Valid_Solutions(Definitions, Requirements):
     print(f"{'*'*36} Start {'*'*37}")
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
     print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
-    for PotentialSolution in Generate_Next_Solutions(SolutionList):
+    for PotentialSolution in Generate_Next_Solution(SolutionList):
         SolutionValidityTest = []
         for net, pin in PotentialSolution.items():
             SolutionValidityTest.extend([pin[0]])
@@ -94,6 +90,9 @@ def Print_Full_Solution_List(outputs):
             test.add(pin[0])
             print(f"{net}\t{pin}")
     print("*"*80)
+
+Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
+Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
 
 ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
 Print_Full_Solution_List(ValidSolutions)
