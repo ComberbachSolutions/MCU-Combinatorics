@@ -69,24 +69,29 @@ def Find_All_Solutions(SolutionList):
     return [{key: value for key, value in zip(SolutionList.keys(), combo)} for combo in combinations]
 
 def Find_All_Valid_Solutions(Definitions, Requirements):
+    print(f"{'*'*36} Start {'*'*37}")
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
+    print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
     AllSolutions = Find_All_Solutions(SolutionList)
+    print(f"{'*'*27} Find_All_Solutions Done {'*'*28}")
     for PotentialSolution in reversed(AllSolutions):
         SolutionValidityTest = []
         for net, pin in PotentialSolution.items():
             SolutionValidityTest.extend([pin[0]])
         if len(SolutionValidityTest) != len(set(SolutionValidityTest)):
             AllSolutions.remove(PotentialSolution)
+    print(f"{'*'*24} Find_All_Valid_Solutions Done {'*'*25}")
     return AllSolutions
 
 def Print_Full_Solution_List(outputs):
     for index, output in enumerate(outputs):
-        print(f"{'*'*25} Option {index} {'*'*25}")
+        print(f"{'*'*34} Option {index} {'*'*34}")
         test = set()
         for net, pin in output.items():
             test.add(pin[0])
             print(f"{net}\t{pin}")
-    print("*"*50)
+    print("*"*80)
 
 ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
 Print_Full_Solution_List(ValidSolutions)
+print(f"{'*'*35} Fin Done {'*'*35}")
