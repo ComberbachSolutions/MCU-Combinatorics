@@ -20,8 +20,8 @@ Blower 2 PWM Signal,GPT,,,
 Blower 2 Tach Signal,ADC,ADC0,,
 Blower 2 Tach Signal,ADC,ADC1,,
 Blower 2 Tach Signal,GPT,,,
-CAL_ANA,ADC,ADS0,5,
-CAL_ANA,ADC,ADS0,6,
+CAL_ANA,ADC,ADC0,5,
+CAL_ANA,ADC,ADC0,6,
 Compressor Y1,GPIO,,,Write
 Compressor Y2,GPIO,,,Write
 DAT Signal,ADC,ADC0,,
@@ -49,9 +49,9 @@ LCD SPI MISO,SPI,MISO,B,A
 LCD SPI MOSI,SPI,MOSI,B,A
 LCD SPI SCLK,SPI,CLK,B,A
 LIN CS,GPIO,,,Write
-LIN RX - MCU TX,UART,TX,9,
+LIN RX - MCU TX,SCI,UART,TX,9
 LIN Sensor Error Signal,Interrupt,,,
-LIN TX - MCU RX,UART,RX,9,
+LIN TX - MCU RX,SCI,UART,RX,9
 LIN Wake,GPIO,,,Read
 Outdoor Temperature Signal,ADC,ADC0,,
 Outdoor Temperature Signal,ADC,ADC1,,
@@ -79,12 +79,12 @@ Relay 6 Trigger,GPIO,,,Write
 Relay Power Enable,GPIO,,,Write
 RF Interrupt,Interrupt,,,
 RF Reset,GPIO,,,Write
-RF RX - MCU TX,UART,TX,4,
-RF TX - MCU RX,UART,RX,4,
+RF RX - MCU TX,SCI,UART,TX,4
+RF TX - MCU RX,SCI,UART,RX,4
 RS485 Enable,GPIO,,,Write
 RS485 Fault LED,GPIO,,,Write
-RS485 RX - MCU TX,UART,TX,3,
-RS485 TX - MCU RX,UART,RX,3,
+RS485 RX - MCU TX,SCI,UART,TX,3
+RS485 TX - MCU RX,SCI,UART,RX,3
 SW1,Interrupt,,,
 SW2,Interrupt,,,
 SW3,Interrupt,,,
