@@ -195,14 +195,14 @@ def Print_Full_Solution_List(outputs):
             print(f"{net}\t{pin}")
     print("*"*80)
 
-def Solution_Is_Valid(PotentialSolution):
-    SolutionValidityTest = []
-    for net, pin in PotentialSolution.items():
-        SolutionValidityTest += [pin[0]]
-    if len(SolutionValidityTest) == len(set(SolutionValidityTest)):
-        return True
-    else:
-        return False
+def Solution_Is_Valid(potential_solution):
+    seen_pins = set()
+    for net, pin in potential_solution.items():
+        if pin[0] in seen_pins:
+            return False  # Early termination on finding a duplicate
+        seen_pins.add(pin[0])
+    return True  # If no duplicates found, the solution is valid
+
 
 def continuous_generate_and_validate_solutions(Definitions, Requirements):
     AllSolutions = []
@@ -235,7 +235,6 @@ def Function_To_Test():
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
     Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")
-
 
 if __name__ == '__main__':
     Function_To_Test()
