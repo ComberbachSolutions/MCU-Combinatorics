@@ -160,20 +160,18 @@ def Find_Potential_Solutions(Definitions, Requirements):
     return PinSolutions
 
 def Generate_Next_Solution(SolutionList):
-    ErrorInData = False
-    for Key, Value in SolutionList.items():
-        if Value == []:
-            print(f"Error on {Key} - {Value}")
-            ErrorInData = True
-    if ErrorInData == True:
+    # Check for empty values and return immediately if found
+    if any(not value for value in SolutionList.values()):
+        print("Error in data")
         return []
     Count = 0
+    # Generate combinations using a more streamlined approach
     for combo in product(*SolutionList.values()):
         Count += 1
         if Count % 10000 == 0:
             print(Count)
             break
-        yield {key: value for key, value in zip(SolutionList.keys(), combo)}
+        yield dict(zip(SolutionList.keys(), combo))
 
 def Find_All_Valid_Solutions(Definitions, Requirements):
     AllSolutions = []
