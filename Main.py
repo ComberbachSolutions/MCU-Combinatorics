@@ -6,8 +6,114 @@
 
 from itertools import product
 import ImportFromCSV
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import cProfile
+import pstats
 
 
+
+# These are used for testing only
+Requirements = {
+    "Net1":
+    {
+        "ADC":
+        {
+            "ADC0":
+            {
+                "":"",
+            },
+        },
+    },
+    "Net2":
+    {
+        "ADC":
+        {
+            "":"",
+        },
+    },
+    "Net3":
+    {
+        "GPIO":
+        {
+            "":
+            {
+                "":
+                {
+                    "Read":"",
+                }
+            },
+        },
+    },
+}
+
+Definitions = {
+    "Pin 1":
+    {
+        "GPIO":
+        {
+            "Port0":
+            {
+                "0":
+                {
+                    "Read":"",
+                    "Write":"",
+                }
+            },
+        },
+        "ADC":
+        {
+            "ADC0":
+            {
+                "0":"",
+            },
+        },
+    },
+    "Pin 2":
+    {
+     "GPIO":
+        {
+            "Port0":
+            {
+                "1":
+                {
+                    "Read":"",
+                    "Write":"",
+                }
+            },
+        },
+        "ADC":
+        {
+            "ADC1":
+            {
+                "0":"",
+            },
+        },
+    },
+    "Pin 3":
+    {
+        "GPIO":
+        {
+            "Port0":
+            {
+                "3":
+                {
+                    "Read":"",
+                }
+            },
+        },
+        "ADC":
+        {
+            "ADC1":
+            {
+                "0":"",
+            },
+            "ADC1":
+            {
+                "1":"",
+            },
+        },
+    },
+}
 
 def Expand_Dictionary(Multidictionary, CurrentPath=[]):
     # This is a recursive function that reduces a dictionary of dictionaries to a list of all the key values along each path
@@ -61,39 +167,86 @@ def Generate_Next_Solution(SolutionList):
             ErrorInData = True
     if ErrorInData == True:
         return []
+    Count = 0
     for combo in product(*SolutionList.values()):
+        Count += 1
+        if Count % 10000 == 0:
+            print(Count)
+            break
         yield {key: value for key, value in zip(SolutionList.keys(), combo)}
 
 def Find_All_Valid_Solutions(Definitions, Requirements):
     AllSolutions = []
-    iteration = 0
     print(f"{'*'*36} Start {'*'*37}")
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
     print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
     for PotentialSolution in Generate_Next_Solution(SolutionList):
-        SolutionValidityTest = []
-        for net, pin in PotentialSolution.items():
-            SolutionValidityTest.extend([pin[0]])
-        if len(SolutionValidityTest) == len(set(SolutionValidityTest)):
+        if Solution_Is_Valid(PotentialSolution) == True:
             AllSolutions.append(PotentialSolution)
-            print(PotentialSolution)
-        print(f"Iteration {iteration}\n", end="")
-        iteration += 1
+            print(AllSolutions)
     print(f"{'*'*24} Find_All_Valid_Solutions Done {'*'*25}")
     return AllSolutions
 
 def Print_Full_Solution_List(outputs):
     for index, output in enumerate(outputs):
         print(f"{'*'*34} Option {index} {'*'*34}")
-        test = set()
-        for net, pin in output.items():
-            test.add(pin[0])
+        # Directly sort by Pin Number and iterate through items for printing
+        for net, pin in sorted(output.items(), key=lambda item: item[1][0]):
             print(f"{net}\t{pin}")
     print("*"*80)
 
-Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
-Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
+def Solution_Is_Valid(PotentialSolution):
+    SolutionValidityTest = []
+    for net, pin in PotentialSolution.items():
+        SolutionValidityTest.extend([pin[0]])
+    if len(SolutionValidityTest) == len(set(SolutionValidityTest)):
+        return True
+    else:
+        return False
 
-ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-Print_Full_Solution_List(ValidSolutions)
-print(f"{'*'*35} Fin Done {'*'*35}")
+def continuous_generate_and_validate_solutions(Definitions, Requirements):
+    AllSolutions = []
+    print(f"{'*'*36} Start {'*'*37}")
+    SolutionList = Find_Potential_Solutions(Definitions, Requirements)
+    print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
+    
+    # Initialize ProcessPoolExecutor
+    with ProcessPoolExecutor() as executor:
+        # Create a future-to-solution mapping
+        future_to_solution = {}
+        
+        # Submit potential solutions for validation as they are generated
+        for PotentialSolution in Generate_Next_Solution(SolutionList):
+            future = executor.submit(Solution_Is_Valid, PotentialSolution)
+            future_to_solution[future] = PotentialSolution
+        
+        # Collect and store valid solutions
+        for future in as_completed(future_to_solution):
+            if future.result():
+                valid_solution = future_to_solution[future]
+                AllSolutions.append(valid_solution)
+                print(valid_solution)
+    
+    print(f"{'*'*24} Find_All_Valid_Solutions Done {'*'*25}")
+    return AllSolutions
+
+def Function_To_Test():
+    # ValidSolutions = continuous_generate_and_validate_solutions(Definitions, Requirements)
+    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    Print_Full_Solution_List(ValidSolutions)
+    print(f"{'*'*35} Fin Done {'*'*35}")
+
+
+if __name__ == '__main__':
+    Function_To_Test()
+
+    Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
+    Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
+
+    profile = cProfile.Profile()
+    profile.runctx("Function_To_Test()", globals(), locals())
+    ps = pstats.Stats(profile)
+    ps.sort_stats('tottime')
+    ps.print_stats()
+
+    # Function_To_Test()
