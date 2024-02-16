@@ -198,7 +198,7 @@ def Print_Full_Solution_List(outputs):
 def Solution_Is_Valid(PotentialSolution):
     SolutionValidityTest = []
     for net, pin in PotentialSolution.items():
-        SolutionValidityTest.extend([pin[0]])
+        SolutionValidityTest += [pin[0]]
     if len(SolutionValidityTest) == len(set(SolutionValidityTest)):
         return True
     else:
