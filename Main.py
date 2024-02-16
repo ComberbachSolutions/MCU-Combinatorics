@@ -6,9 +6,8 @@
 
 from itertools import product
 import ImportFromCSV
-from concurrent.futures import ProcessPoolExecutor, as_completed
-import cProfile
-import pstats
+# import cProfile
+# import pstats
 
 
 
@@ -164,13 +163,7 @@ def Generate_Next_Solution(SolutionList):
     if any(not value for value in SolutionList.values()):
         print("Error in data")
         return []
-    Count = 0
-    # Generate combinations using a more streamlined approach
     for combo in product(*SolutionList.values()):
-        Count += 1
-        if Count % 10000 == 0:
-            print(Count)
-            break
         yield dict(zip(SolutionList.keys(), combo))
 
 def Find_All_Valid_Solutions(Definitions, Requirements):
@@ -178,7 +171,11 @@ def Find_All_Valid_Solutions(Definitions, Requirements):
     print(f"{'*'*36} Start {'*'*37}")
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
     print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
+    Count = 0
     for PotentialSolution in Generate_Next_Solution(SolutionList):
+        Count += 1
+        if Count % 200000 == 0:
+            print(f"Iterations = {Count:,}\tSolutions = {len(AllSolutions)}")
         if Solution_Is_Valid(PotentialSolution) == True:
             AllSolutions.append(PotentialSolution)
             print(AllSolutions)
@@ -229,21 +226,27 @@ def continuous_generate_and_validate_solutions(Definitions, Requirements):
     return AllSolutions
 
 def Function_To_Test():
-    # ValidSolutions = continuous_generate_and_validate_solutions(Definitions, Requirements)
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    Print_Full_Solution_List(ValidSolutions)
-    print(f"{'*'*35} Fin Done {'*'*35}")
 
 if __name__ == '__main__':
-    Function_To_Test()
+    CorrectSolution = [{'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 2', 'ADC', 'ADC1', '0'], 'Net3': ['Pin 3', 'GPIO', 'Port0', '3', 'Read']}, {'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 3', 'ADC', 'ADC1', '1'], 'Net3': ['Pin 2', 'GPIO', 'Port0', '1', 'Read']}];
+    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    if ValidSolutions == CorrectSolution:
+        print("Passed"*100)
+    else:
+        print("Failed"*100)
+    Print_Full_Solution_List(ValidSolutions)
+    print(f"{'*'*35} Fin Done {'*'*35}")
 
     Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
     Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
 
-    profile = cProfile.Profile()
-    profile.runctx("Function_To_Test()", globals(), locals())
-    ps = pstats.Stats(profile)
-    ps.sort_stats('tottime')
-    ps.print_stats()
+    # profile = cProfile.Profile()
+    # profile.runctx("Function_To_Test()", globals(), locals())
+    # ps = pstats.Stats(profile)
+    # ps.sort_stats('tottime')
+    # ps.print_stats()
 
-    # Function_To_Test()
+    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    Print_Full_Solution_List(ValidSolutions)
+    print(f"{'*'*35} Fin Done {'*'*35}")
