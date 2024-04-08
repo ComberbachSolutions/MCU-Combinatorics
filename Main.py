@@ -166,6 +166,47 @@ def Generate_Next_Solution(SolutionList):
     for combo in product(*SolutionList.values()):
         yield dict(zip(SolutionList.keys(), combo))
 
+def Find_A_Valid_Solution(Definitions, Requirements):
+    SolutionList = Find_Potential_Solutions(Definitions, Requirements)
+    print(find_unique_solution(SolutionList))
+
+def find_unique_solution(nets):
+    def backtrack(solution, nets_keys, used_pins, index=0):
+        """Recursive function to find a valid solution."""
+        # Base case: if the solution includes all nets, return True
+        if index == len(nets_keys):
+            return True
+        print(index)
+        net = nets_keys[index]
+        for pin in nets[net]:
+            if pin[0] not in used_pins:  # Check if pin is not already used
+                solution[net] = pin
+                used_pins.add(pin[0])  # Mark pin as used
+                
+                if backtrack(solution, nets_keys, used_pins, index + 1):
+                    return True
+                
+                # Backtrack: remove the last pin added to the solution and mark it as unused
+                del solution[net]
+                used_pins.remove(pin[0])
+        
+        return False
+
+    solution = {}
+    used_pins = set()  # Keep track of used pins to avoid duplicates
+    nets_keys = list(nets.keys())
+    if backtrack(solution, nets_keys, used_pins):
+        return solution
+    else:
+        return None  # No valid solution found
+
+
+
+
+
+
+
+
 def Find_All_Valid_Solutions(Definitions, Requirements):
     AllSolutions = []
     print(f"{'*'*36} Start {'*'*37}")
@@ -229,6 +270,8 @@ def Function_To_Test():
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
 
 if __name__ == '__main__':
+    ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
+
     CorrectSolution = [{'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 2', 'ADC', 'ADC1', '0'], 'Net3': ['Pin 3', 'GPIO', 'Port0', '3', 'Read']}, {'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 3', 'ADC', 'ADC1', '1'], 'Net3': ['Pin 2', 'GPIO', 'Port0', '1', 'Read']}];
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
     if ValidSolutions == CorrectSolution:
@@ -247,6 +290,8 @@ if __name__ == '__main__':
     # ps.sort_stats('tottime')
     # ps.print_stats()
 
+    ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
+    
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
     Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")
