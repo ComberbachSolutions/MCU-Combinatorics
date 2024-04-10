@@ -55,7 +55,7 @@ LIN TX - MCU RX,SCI,UART,RX,9
 LIN Wake,GPIO,,,Read
 Outdoor Temperature Signal,ADC,ADC0,,
 Outdoor Temperature Signal,ADC,ADC1,,
-Over Temperature Alarm,Interrupt,,,
+Over Temperature Alarm,GPIO,,,Read
 Pump 1 Enable,GPIO,,,Write
 Pump 1 Fault,Interrupt,,,
 Pump 1 PWM,GPT,,,
@@ -77,7 +77,7 @@ Relay 4 Trigger,GPIO,,,Write
 Relay 5 Trigger,GPIO,,,Write
 Relay 6 Trigger,GPIO,,,Write
 Relay Power Enable,GPIO,,,Write
-RF Interrupt,Interrupt,,,
+RF Interrupt,GPIO,,,Read
 RF Reset,GPIO,,,Write
 RF RX - MCU TX,SCI,UART,TX,4
 RF TX - MCU RX,SCI,UART,RX,4
@@ -93,11 +93,11 @@ Temperature Sense 1 Signal,ADC,ADC1,,
 Temperature Sense 2 Signal,ADC,ADC0,,
 Temperature Sense 2 Signal,ADC,ADC1,,
 Thermistor Enable,GPIO,,,Write
-Thermistor Fault,Interrupt,,,
-T-Stat G,Interrupt,,,
-T-Stat W,Interrupt,,,
-T-Stat Y1,Interrupt,,,
-T-Stat Y2,Interrupt,,,
+Thermistor Fault,GPIO,,,Read
+T-Stat G,GPIO,,,Read
+T-Stat W,GPIO,,,Read
+T-Stat Y1,GPIO,,,Read
+T-Stat Y2,GPIO,,,Read
 UI1,ADC,ADC0,,
 UI1,ADC,ADC1,,
 UI1 0-10V Enable,GPIO,,,Write
@@ -117,6 +117,6 @@ Water Valve Fault,GPIO,,,Read
 Water Valve Home,GPIO,,,Read
 Water Valve Reset,GPIO,,,Write
 Water Valve Step,GPT,,,
-Zone 1 W,Interrupt,,,
-Zone 2 W,Interrupt,,,
-Zone 3 W,Interrupt,,,
+Zone 1 W,GPIO,,,Read
+Zone 2 W,GPIO,,,Read
+Zone 3 W,GPIO,,,Read
