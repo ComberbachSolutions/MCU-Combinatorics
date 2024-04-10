@@ -29,22 +29,18 @@ def read_dict_from_file(filename):
         return json.load(file)
 
 if __name__ == "__main__":
-    nested_dict_result = csv_file_to_dict('RA6M3 LQFP176 Pinout.csv')
-    print(nested_dict_result)
+    def convert_CSV_to_JSON(name_of_file):
+        nested_dict_result = csv_file_to_dict(f"{name_of_file}.csv")
 
-    for Name, Functions in nested_dict_result.items():
-        print(Name, end="")
-        for Function in Functions.items():
-            print(f"\t{Function}")
+        for Name, Functions in nested_dict_result.items():
+            print(Name, end="")
+            for Function in Functions.items():
+                print(f"\t{Function}")
 
-    write_dict_to_file(nested_dict_result, 'RA6M3 LQFP176 Pinout.JSON')
+        write_dict_to_file(nested_dict_result, f"{name_of_file}.JSON")
 
-    nested_dict_result = csv_file_to_dict('MUA Requirements.csv')
-    print(nested_dict_result)
-
-    for Name, Functions in nested_dict_result.items():
-        print(Name, end="")
-        for Function in Functions.items():
-            print(f"\t{Function}")
-
-    write_dict_to_file(nested_dict_result, 'MUA Requirements.JSON')
+    print("*"*141)
+    convert_CSV_to_JSON("RA6M3 LQFP176 Pinout")
+    print("*"*141)
+    convert_CSV_to_JSON("MUA Requirements")
+    print("*"*141)
