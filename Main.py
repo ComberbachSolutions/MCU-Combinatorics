@@ -168,7 +168,8 @@ def Generate_Next_Solution(SolutionList):
 
 def Find_A_Valid_Solution(Definitions, Requirements):
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
-    print(find_unique_solution(SolutionList))
+    solution = find_unique_solution(SolutionList)
+    return solution
 
 def find_unique_solution(nets):
     def backtrack(solution, nets_keys, used_pins, index=0):
@@ -291,7 +292,8 @@ if __name__ == '__main__':
     # ps.print_stats()
 
     ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
-    
-    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    Print_Full_Solution_List(ValidSolutions)
+    print(ValidSolutions)
+
+    # ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    # Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")
