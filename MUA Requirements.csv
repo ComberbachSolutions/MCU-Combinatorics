@@ -108,9 +108,9 @@ UI2,GPIO,,,Read
 UI2 0-10V Enable,GPIO,,,Write
 UI2 4-20mA Enable,GPIO,,,Write
 UI2 Thermistor Enable,GPIO,,,Write
-USB Enable,GPIO,Port4,15,Write
-USB Fault,GPIO,Port5,1,Read
-USB Vbus,GPIO,Port4,7,Read
+USB Enable,GPIO,,,Write
+USB Fault,GPIO,,,Read
+USB Vbus,GPIO,,,Read
 Water Valve Direction,GPIO,,,Write
 Water Valve Enable,GPIO,,,Write
 Water Valve Fault,GPIO,,,Read
