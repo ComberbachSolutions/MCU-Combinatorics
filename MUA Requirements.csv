@@ -37,8 +37,8 @@ Grundfos 2 Temperature Signal,GPIO,,,Read
 Grundfos 2 Temperature Signal,GPIO,,,Read
 HRV Interlock In,GPIO,,,Write
 Humidity Solenoid,GPIO,,,Write
-I2C SCL,I2C,SCL,0,A
-I2C SDA,I2C,SDA,0,A
+I2C SCL,GPIO,,,Read
+I2C SDA,GPIO,,,Read
 Indoor Temperature Signal,GPIO,,,Read
 Indoor Temperature Signal,GPIO,,,Read
 LCD Backlight PWM,GPIO,,,Write
