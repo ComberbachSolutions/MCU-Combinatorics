@@ -1,6 +1,6 @@
 ﻿24VDC Enable,GPIO,,,Write
-24VDC Power Good,Interrupt,,,
-5VDC Power Good,Interrupt,NMI,,
+24VDC Power Good,GPIO,,,Read
+5VDC Power Good,GPIO,,,Read
 Air Damper 1 Control PWM,GPT,,,
 Air Damper 1 Tach Signal,GPIO,,,Read
 Air Damper 1 Tach Signal,GPIO,,,Read
@@ -9,12 +9,12 @@ Air Damper 2 Tach Signal,GPIO,,,Read
 Air Damper 2 Tach Signal,GPIO,,,Read
 Alarm Input Signal,GPT,GTETRG,,
 Blower 1 Enable Signal,GPIO,,,Write
-Blower 1 Fault Signal,Interrupt,,,
+Blower 1 Fault Signal,GPIO,,,Read
 Blower 1 PWM Signal,GPT,,,
 Blower 1 Tach Signal,GPIO,,,Read
 Blower 1 Tach Signal,GPIO,,,Read
 Blower 1 Tach Signal,GPT,,,
-Blower 2 Fault,Interrupt,,,
+Blower 2 Fault,GPIO,,,Read
 Blower 2 Go Signal,GPIO,,,Write
 Blower 2 PWM Signal,GPT,,,
 Blower 2 Tach Signal,GPIO,,,Read
@@ -50,20 +50,20 @@ LCD SPI MOSI,SPI,MOSI,B,A
 LCD SPI SCLK,SPI,CLK,B,A
 LIN CS,GPIO,,,Write
 LIN RX - MCU TX,SCI,UART,TX,9
-LIN Sensor Error Signal,Interrupt,,,
+LIN Sensor Error Signal,GPIO,,,Read
 LIN TX - MCU RX,SCI,UART,RX,9
 LIN Wake,GPIO,,,Read
 Outdoor Temperature Signal,GPIO,,,Read
 Outdoor Temperature Signal,GPIO,,,Read
 Over Temperature Alarm,GPIO,,,Read
 Pump 1 Enable,GPIO,,,Write
-Pump 1 Fault,Interrupt,,,
+Pump 1 Fault,GPIO,,,Read
 Pump 1 PWM,GPT,,,
 Pump 1 Tach,GPIO,,,Read
 Pump 1 Tach,GPIO,,,Read
 Pump 1 Tach,GPT,,,
 Pump 2 Enable,GPIO,,,Write
-Pump 2 Fault,Interrupt,,,
+Pump 2 Fault,GPIO,,,Read
 Pump 2 PWM,GPT,,,
 Pump 2 Tach,GPIO,,,Read
 Pump 2 Tach,GPIO,,,Read
@@ -85,9 +85,9 @@ RS485 Enable,GPIO,,,Write
 RS485 Fault LED,GPIO,,,Write
 RS485 RX - MCU TX,SCI,UART,TX,3
 RS485 TX - MCU RX,SCI,UART,RX,3
-SW1,Interrupt,,,
-SW2,Interrupt,,,
-SW3,Interrupt,,,
+SW1,GPIO,,,Read
+SW2,GPIO,,,Read
+SW3,GPIO,,,Read
 Temperature Sense 1 Signal,GPIO,,,Read
 Temperature Sense 1 Signal,GPIO,,,Read
 Temperature Sense 2 Signal,GPIO,,,Read
