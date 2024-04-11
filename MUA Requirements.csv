@@ -49,9 +49,9 @@ LCD SPI MISO,SPI,MISO,B,A
 LCD SPI MOSI,SPI,MOSI,B,A
 LCD SPI SCLK,SPI,CLK,B,A
 LIN CS,GPIO,,,Write
-LIN RX - MCU TX,SCI,UART,TX,9
+LIN RX - MCU TX,GPIO,,,Write
 LIN Sensor Error Signal,GPIO,,,Read
-LIN TX - MCU RX,SCI,UART,RX,9
+LIN TX - MCU RX,GPIO,,,Read
 LIN Wake,GPIO,,,Read
 Outdoor Temperature Signal,GPIO,,,Read
 Outdoor Temperature Signal,GPIO,,,Read
@@ -79,12 +79,12 @@ Relay 6 Trigger,GPIO,,,Write
 Relay Power Enable,GPIO,,,Write
 RF Interrupt,GPIO,,,Read
 RF Reset,GPIO,,,Write
-RF RX - MCU TX,SCI,UART,TX,4
-RF TX - MCU RX,SCI,UART,RX,4
+RF RX - MCU TX,GPIO,,,Write
+RF TX - MCU RX,GPIO,,,Read
 RS485 Enable,GPIO,,,Write
 RS485 Fault LED,GPIO,,,Write
-RS485 RX - MCU TX,SCI,UART,TX,3
-RS485 TX - MCU RX,SCI,UART,RX,3
+RS485 RX - MCU TX,GPIO,,,Write
+RS485 TX - MCU RX,GPIO,,,Read
 SW1,GPIO,,,Read
 SW2,GPIO,,,Read
 SW3,GPIO,,,Read
