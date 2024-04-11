@@ -1,25 +1,25 @@
 ﻿24VDC Enable,GPIO,,,Write
 24VDC Power Good,GPIO,,,Read
 5VDC Power Good,GPIO,,,Read
-Air Damper 1 Control PWM,GPT,,,
+Air Damper 1 Control PWM,GPIO,,,Write
 Air Damper 1 Tach Signal,GPIO,,,Read
 Air Damper 1 Tach Signal,GPIO,,,Read
-Air Damper 2 Control PWM,GPT,,,
+Air Damper 2 Control PWM,GPIO,,,Write
 Air Damper 2 Tach Signal,GPIO,,,Read
 Air Damper 2 Tach Signal,GPIO,,,Read
 Alarm Input Signal,GPT,GTETRG,,
 Blower 1 Enable Signal,GPIO,,,Write
 Blower 1 Fault Signal,GPIO,,,Read
-Blower 1 PWM Signal,GPT,,,
+Blower 1 PWM Signal,GPIO,,,Write
 Blower 1 Tach Signal,GPIO,,,Read
 Blower 1 Tach Signal,GPIO,,,Read
-Blower 1 Tach Signal,GPT,,,
+Blower 1 Tach Signal,GPIO,,,Write
 Blower 2 Fault,GPIO,,,Read
 Blower 2 Go Signal,GPIO,,,Write
-Blower 2 PWM Signal,GPT,,,
+Blower 2 PWM Signal,GPIO,,,Write
 Blower 2 Tach Signal,GPIO,,,Read
 Blower 2 Tach Signal,GPIO,,,Read
-Blower 2 Tach Signal,GPT,,,
+Blower 2 Tach Signal,GPIO,,,Write
 CAL_ANA,GPIO,,,Read
 CAL_ANA,GPIO,,,Read
 Compressor Y1,GPIO,,,Write
@@ -41,7 +41,7 @@ I2C SCL,I2C,SCL,0,A
 I2C SDA,I2C,SDA,0,A
 Indoor Temperature Signal,GPIO,,,Read
 Indoor Temperature Signal,GPIO,,,Read
-LCD Backlight PWM,GPT,,,
+LCD Backlight PWM,GPIO,,,Write
 LCD DC,GPIO,,,Write
 LCD Reset,GPIO,,,Write
 LCD SPI CS,SPI,SS,0,A
@@ -58,16 +58,16 @@ Outdoor Temperature Signal,GPIO,,,Read
 Over Temperature Alarm,GPIO,,,Read
 Pump 1 Enable,GPIO,,,Write
 Pump 1 Fault,GPIO,,,Read
-Pump 1 PWM,GPT,,,
+Pump 1 PWM,GPIO,,,Write
 Pump 1 Tach,GPIO,,,Read
 Pump 1 Tach,GPIO,,,Read
-Pump 1 Tach,GPT,,,
+Pump 1 Tach,GPIO,,,Write
 Pump 2 Enable,GPIO,,,Write
 Pump 2 Fault,GPIO,,,Read
-Pump 2 PWM,GPT,,,
+Pump 2 PWM,GPIO,,,Write
 Pump 2 Tach,GPIO,,,Read
 Pump 2 Tach,GPIO,,,Read
-Pump 2 Tach,GPT,,,
+Pump 2 Tach,GPIO,,,Write
 RAT Signal,GPIO,,,Read
 RAT Signal,GPIO,,,Read
 Relay 1 Trigger,GPIO,,,Write
@@ -116,7 +116,7 @@ Water Valve Enable,GPIO,,,Write
 Water Valve Fault,GPIO,,,Read
 Water Valve Home,GPIO,,,Read
 Water Valve Reset,GPIO,,,Write
-Water Valve Step,GPT,,,
+Water Valve Step,GPIO,,,Write
 Zone 1 W,GPIO,,,Read
 Zone 2 W,GPIO,,,Read
 Zone 3 W,GPIO,,,Read
