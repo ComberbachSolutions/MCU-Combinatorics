@@ -44,10 +44,10 @@ Indoor Temperature Signal,GPIO,,,Read
 LCD Backlight PWM,GPIO,,,Write
 LCD DC,GPIO,,,Write
 LCD Reset,GPIO,,,Write
-LCD SPI CS,SPI,SS,0,A
-LCD SPI MISO,SPI,MISO,B,A
-LCD SPI MOSI,SPI,MOSI,B,A
-LCD SPI SCLK,SPI,CLK,B,A
+LCD SPI CS,GPIO,,,Read
+LCD SPI MISO,GPIO,,,Read
+LCD SPI MOSI,GPIO,,,Read
+LCD SPI SCLK,GPIO,,,Read
 LIN CS,GPIO,,,Write
 LIN RX - MCU TX,GPIO,,,Write
 LIN Sensor Error Signal,GPIO,,,Read
