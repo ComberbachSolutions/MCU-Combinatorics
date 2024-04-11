@@ -2,45 +2,45 @@
 24VDC Power Good,Interrupt,,,
 5VDC Power Good,Interrupt,NMI,,
 Air Damper 1 Control PWM,GPT,,,
-Air Damper 1 Tach Signal,ADC,ADC0,,
-Air Damper 1 Tach Signal,ADC,ADC1,,
+Air Damper 1 Tach Signal,GPIO,,,Read
+Air Damper 1 Tach Signal,GPIO,,,Read
 Air Damper 2 Control PWM,GPT,,,
-Air Damper 2 Tach Signal,ADC,ADC0,,
-Air Damper 2 Tach Signal,ADC,ADC1,,
+Air Damper 2 Tach Signal,GPIO,,,Read
+Air Damper 2 Tach Signal,GPIO,,,Read
 Alarm Input Signal,GPT,GTETRG,,
 Blower 1 Enable Signal,GPIO,,,Write
 Blower 1 Fault Signal,Interrupt,,,
 Blower 1 PWM Signal,GPT,,,
-Blower 1 Tach Signal,ADC,ADC0,,
-Blower 1 Tach Signal,ADC,ADC1,,
+Blower 1 Tach Signal,GPIO,,,Read
+Blower 1 Tach Signal,GPIO,,,Read
 Blower 1 Tach Signal,GPT,,,
 Blower 2 Fault,Interrupt,,,
 Blower 2 Go Signal,GPIO,,,Write
 Blower 2 PWM Signal,GPT,,,
-Blower 2 Tach Signal,ADC,ADC0,,
-Blower 2 Tach Signal,ADC,ADC1,,
+Blower 2 Tach Signal,GPIO,,,Read
+Blower 2 Tach Signal,GPIO,,,Read
 Blower 2 Tach Signal,GPT,,,
-CAL_ANA,ADC,ADC0,5,
-CAL_ANA,ADC,ADC0,6,
+CAL_ANA,GPIO,,,Read
+CAL_ANA,GPIO,,,Read
 Compressor Y1,GPIO,,,Write
 Compressor Y2,GPIO,,,Write
-DAT Signal,ADC,ADC0,,
-DAT Signal,ADC,ADC1,,
+DAT Signal,GPIO,,,Read
+DAT Signal,GPIO,,,Read
 Door Trigger,GPT,GTETRG,,
-Grundfos 1 Flow Signal,ADC,ADC0,,
-Grundfos 1 Flow Signal,ADC,ADC1,,
-Grundfos 1 Temperature Signal,ADC,ADC0,,
-Grundfos 1 Temperature Signal,ADC,ADC1,,
-Grundfos 2 Pressure Signal,ADC,ADC0,,
-Grundfos 2 Pressure Signal,ADC,ADC1,,
-Grundfos 2 Temperature Signal,ADC,ADC0,,
-Grundfos 2 Temperature Signal,ADC,ADC1,,
+Grundfos 1 Flow Signal,GPIO,,,Read
+Grundfos 1 Flow Signal,GPIO,,,Read
+Grundfos 1 Temperature Signal,GPIO,,,Read
+Grundfos 1 Temperature Signal,GPIO,,,Read
+Grundfos 2 Pressure Signal,GPIO,,,Read
+Grundfos 2 Pressure Signal,GPIO,,,Read
+Grundfos 2 Temperature Signal,GPIO,,,Read
+Grundfos 2 Temperature Signal,GPIO,,,Read
 HRV Interlock In,GPIO,,,Write
 Humidity Solenoid,GPIO,,,Write
 I2C SCL,I2C,SCL,0,A
 I2C SDA,I2C,SDA,0,A
-Indoor Temperature Signal,ADC,ADC0,,
-Indoor Temperature Signal,ADC,ADC1,,
+Indoor Temperature Signal,GPIO,,,Read
+Indoor Temperature Signal,GPIO,,,Read
 LCD Backlight PWM,GPT,,,
 LCD DC,GPIO,,,Write
 LCD Reset,GPIO,,,Write
@@ -53,23 +53,23 @@ LIN RX - MCU TX,SCI,UART,TX,9
 LIN Sensor Error Signal,Interrupt,,,
 LIN TX - MCU RX,SCI,UART,RX,9
 LIN Wake,GPIO,,,Read
-Outdoor Temperature Signal,ADC,ADC0,,
-Outdoor Temperature Signal,ADC,ADC1,,
+Outdoor Temperature Signal,GPIO,,,Read
+Outdoor Temperature Signal,GPIO,,,Read
 Over Temperature Alarm,GPIO,,,Read
 Pump 1 Enable,GPIO,,,Write
 Pump 1 Fault,Interrupt,,,
 Pump 1 PWM,GPT,,,
-Pump 1 Tach,ADC,ADC0,,
-Pump 1 Tach,ADC,ADC1,,
+Pump 1 Tach,GPIO,,,Read
+Pump 1 Tach,GPIO,,,Read
 Pump 1 Tach,GPT,,,
 Pump 2 Enable,GPIO,,,Write
 Pump 2 Fault,Interrupt,,,
 Pump 2 PWM,GPT,,,
-Pump 2 Tach,ADC,ADC0,,
-Pump 2 Tach,ADC,ADC1,,
+Pump 2 Tach,GPIO,,,Read
+Pump 2 Tach,GPIO,,,Read
 Pump 2 Tach,GPT,,,
-RAT Signal,ADC,ADC0,,
-RAT Signal,ADC,ADC1,,
+RAT Signal,GPIO,,,Read
+RAT Signal,GPIO,,,Read
 Relay 1 Trigger,GPIO,,,Write
 Relay 2 Trigger,GPIO,,,Write
 Relay 3 Trigger,GPIO,,,Write
@@ -88,23 +88,23 @@ RS485 TX - MCU RX,SCI,UART,RX,3
 SW1,Interrupt,,,
 SW2,Interrupt,,,
 SW3,Interrupt,,,
-Temperature Sense 1 Signal,ADC,ADC0,,
-Temperature Sense 1 Signal,ADC,ADC1,,
-Temperature Sense 2 Signal,ADC,ADC0,,
-Temperature Sense 2 Signal,ADC,ADC1,,
+Temperature Sense 1 Signal,GPIO,,,Read
+Temperature Sense 1 Signal,GPIO,,,Read
+Temperature Sense 2 Signal,GPIO,,,Read
+Temperature Sense 2 Signal,GPIO,,,Read
 Thermistor Enable,GPIO,,,Write
 Thermistor Fault,GPIO,,,Read
 T-Stat G,GPIO,,,Read
 T-Stat W,GPIO,,,Read
 T-Stat Y1,GPIO,,,Read
 T-Stat Y2,GPIO,,,Read
-UI1,ADC,ADC0,,
-UI1,ADC,ADC1,,
+UI1,GPIO,,,Read
+UI1,GPIO,,,Read
 UI1 0-10V Enable,GPIO,,,Write
 UI1 4-20mA Enable,GPIO,,,Write
 UI1 Thermistor Enable,GPIO,,,Write
-UI2,ADC,ADC0,,
-UI2,ADC,ADC1,,
+UI2,GPIO,,,Read
+UI2,GPIO,,,Read
 UI2 0-10V Enable,GPIO,,,Write
 UI2 4-20mA Enable,GPIO,,,Write
 UI2 Thermistor Enable,GPIO,,,Write
