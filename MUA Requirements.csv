@@ -7,7 +7,7 @@ Air Damper 1 Tach Signal,GPIO,,,Read
 Air Damper 2 Control PWM,GPIO,,,Write
 Air Damper 2 Tach Signal,GPIO,,,Read
 Air Damper 2 Tach Signal,GPIO,,,Read
-Alarm Input Signal,GPT,GTETRG,,
+Alarm Input Signal,GPIO,,,Read
 Blower 1 Enable Signal,GPIO,,,Write
 Blower 1 Fault Signal,GPIO,,,Read
 Blower 1 PWM Signal,GPIO,,,Write
@@ -26,7 +26,7 @@ Compressor Y1,GPIO,,,Write
 Compressor Y2,GPIO,,,Write
 DAT Signal,GPIO,,,Read
 DAT Signal,GPIO,,,Read
-Door Trigger,GPT,GTETRG,,
+Door Trigger,GPIO,,,Read
 Grundfos 1 Flow Signal,GPIO,,,Read
 Grundfos 1 Flow Signal,GPIO,,,Read
 Grundfos 1 Temperature Signal,GPIO,,,Read
