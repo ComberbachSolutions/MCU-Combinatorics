@@ -7,12 +7,14 @@
 from itertools import product
 import ImportFromCSV
 from math import prod
+import time
 # import cProfile
 # import pstats
 
 
 
-ITERATIONS_PER_SECOND = 200000
+ITERATIONS_PER_SECOND = 695251
+
 # These are used for testing only
 Requirements = {
     "Net1":
@@ -243,10 +245,13 @@ def Find_All_Valid_Solutions(Definitions, Requirements):
     SolutionList = Find_Potential_Solutions(Definitions, Requirements)
     print(f"{'*'*24} Find_Potential_Solutions Done {'*'*25}")
     Count = 0
+    timer = time.time()
     for PotentialSolution in Generate_Next_Solution(SolutionList):
         Count += 1
-        if Count % 200000 == 0:
-            print(f"Iterations = {Count:,}\tSolutions = {len(AllSolutions)}")
+        if Count % 65536 == 0:
+            if time.time() - timer >= 1:
+                timer = time.time()
+                print(f"Iterations = {Count:,}\tSolutions = {len(AllSolutions)}")
         if Solution_Is_Valid(PotentialSolution) == True:
             AllSolutions.append(PotentialSolution)
             # print(AllSolutions)
@@ -326,5 +331,5 @@ if __name__ == '__main__':
     # print(f"->{ValidSolutions}")
 
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    Print_Full_Solution_List(ValidSolutions)
+    # Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")

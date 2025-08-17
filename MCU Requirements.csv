@@ -1,8 +1,8 @@
-﻿NetA,GPIO,,0,Read
+﻿NetA,GPIO,,,Read
 NetB,GPIO,,,Write
 NetC,GPIO,,,Read
 NetD,GPIO,,,Write
 NetE,GPIO,,,Read
 NetF,GPIO,,,Write
 NetG,GPIO,,,Read
-NetH,GPIO,,0,Write
+NetH,GPIO,,,Write
