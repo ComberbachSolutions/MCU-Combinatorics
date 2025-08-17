@@ -6,11 +6,13 @@
 
 from itertools import product
 import ImportFromCSV
+from math import prod
 # import cProfile
 # import pstats
 
 
 
+ITERATIONS_PER_SECOND = 200000
 # These are used for testing only
 Requirements = {
     "Net1":
@@ -158,11 +160,38 @@ def Find_Potential_Solutions(Definitions, Requirements):
                 PinSolutions[Requirement[0]].append(Definition)
     return PinSolutions
 
+def product_size(iterables):
+    """
+    Return the number of results itertools.product(*iterables) would yield,
+    without actually generating them.
+    """
+    lengths = [len(list(it)) for it in iterables]  # convert if not sized
+    if not lengths:
+        return 1  # product of zero iterables = 1 (empty tuple)
+    if any(L == 0 for L in lengths):
+        return 0
+    return prod(lengths)
+
 def Generate_Next_Solution(SolutionList):
     # Check for empty values and return immediately if found
     if any(not value for value in SolutionList.values()):
         print("Error in data")
         return []
+    SearchSpace = product_size(SolutionList.values())
+    print(f"{SearchSpace} iterations or...\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND} seconds\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/60} minutes\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600} hours\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24} days\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/7} weeks\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/31} months\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24} years\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24/10} decades\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24/100} centuries\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24/1000} milleniums\n \
+          {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24/1000000} eons"
+          )
+    print("Yeehaw!")
     for combo in product(*SolutionList.values()):
         yield dict(zip(SolutionList.keys(), combo))
 
@@ -177,7 +206,7 @@ def find_unique_solution(nets):
         # Base case: if the solution includes all nets, return True
         if index == len(nets_keys):
             return True
-        print(index)
+        print(f"Solving for pin: {index}")
         net = nets_keys[index]
         for pin in nets[net]:
             if pin[0] not in used_pins:  # Check if pin is not already used
@@ -220,7 +249,7 @@ def Find_All_Valid_Solutions(Definitions, Requirements):
             print(f"Iterations = {Count:,}\tSolutions = {len(AllSolutions)}")
         if Solution_Is_Valid(PotentialSolution) == True:
             AllSolutions.append(PotentialSolution)
-            print(AllSolutions)
+            # print(AllSolutions)
     print(f"{'*'*24} Find_All_Valid_Solutions Done {'*'*25}")
     return AllSolutions
 
@@ -271,19 +300,21 @@ def Function_To_Test():
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
 
 if __name__ == '__main__':
-    ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
+    # ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
 
-    CorrectSolution = [{'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 2', 'ADC', 'ADC1', '0'], 'Net3': ['Pin 3', 'GPIO', 'Port0', '3', 'Read']}, {'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 3', 'ADC', 'ADC1', '1'], 'Net3': ['Pin 2', 'GPIO', 'Port0', '1', 'Read']}];
-    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    if ValidSolutions == CorrectSolution:
-        print("Passed"*100)
-    else:
-        print("Failed"*100)
-    Print_Full_Solution_List(ValidSolutions)
-    print(f"{'*'*35} Fin Done {'*'*35}")
+    # CorrectSolution = [{'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 2', 'ADC', 'ADC1', '0'], 'Net3': ['Pin 3', 'GPIO', 'Port0', '3', 'Read']}, {'Net1': ['Pin 1', 'ADC', 'ADC0', '0'], 'Net2': ['Pin 3', 'ADC', 'ADC1', '1'], 'Net3': ['Pin 2', 'GPIO', 'Port0', '1', 'Read']}];
+    # ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    # if ValidSolutions == CorrectSolution:
+    #     print("Passed"*100)
+    # else:
+    #     print("Failed"*100)
+    # Print_Full_Solution_List(ValidSolutions)
+    # print(f"{'*'*35} Fin Done {'*'*35}")
 
+    ImportFromCSV.convert_CSV_to_JSON("RA6M3 LQFP176 Pinout")
+    ImportFromCSV.convert_CSV_to_JSON("MCU Requirements")
     Definitions = ImportFromCSV.read_dict_from_file("RA6M3 LQFP176 Pinout.JSON")
-    Requirements = ImportFromCSV.read_dict_from_file("MUA Requirements.JSON")
+    Requirements = ImportFromCSV.read_dict_from_file("MCU Requirements.JSON")
 
     # profile = cProfile.Profile()
     # profile.runctx("Function_To_Test()", globals(), locals())
@@ -291,9 +322,9 @@ if __name__ == '__main__':
     # ps.sort_stats('tottime')
     # ps.print_stats()
 
-    ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
-    print(ValidSolutions)
+    # ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
+    # print(f"->{ValidSolutions}")
 
-    # ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    # Print_Full_Solution_List(ValidSolutions)
+    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")

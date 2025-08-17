@@ -31,10 +31,10 @@ def read_dict_from_file(filename):
 def convert_CSV_to_JSON(name_of_file):
     nested_dict_result = csv_file_to_dict(f"{name_of_file}.csv")
 
-    for Name, Functions in nested_dict_result.items():
-        print(Name, end="")
-        for Function in Functions.items():
-            print(f"\t{Function}")
+    # for Name, Functions in nested_dict_result.items():
+    #     print(Name, end="")
+    #     for Function in Functions.items():
+    #         print(f"\t{Function}")
 
     write_dict_to_file(nested_dict_result, f"{name_of_file}.JSON")
 
