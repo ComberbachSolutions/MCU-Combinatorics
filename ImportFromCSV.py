@@ -28,19 +28,19 @@ def read_dict_from_file(filename):
     with open(filename, 'r') as file:
         return json.load(file)
 
+def convert_CSV_to_JSON(name_of_file):
+    nested_dict_result = csv_file_to_dict(f"{name_of_file}.csv")
+
+    for Name, Functions in nested_dict_result.items():
+        print(Name, end="")
+        for Function in Functions.items():
+            print(f"\t{Function}")
+
+    write_dict_to_file(nested_dict_result, f"{name_of_file}.JSON")
+
 if __name__ == "__main__":
-    def convert_CSV_to_JSON(name_of_file):
-        nested_dict_result = csv_file_to_dict(f"{name_of_file}.csv")
-
-        for Name, Functions in nested_dict_result.items():
-            print(Name, end="")
-            for Function in Functions.items():
-                print(f"\t{Function}")
-
-        write_dict_to_file(nested_dict_result, f"{name_of_file}.JSON")
-
     print("*"*141)
     convert_CSV_to_JSON("RA6M3 LQFP176 Pinout")
     print("*"*141)
-    convert_CSV_to_JSON("MUA Requirements")
+    convert_CSV_to_JSON("MCU Requirements")
     print("*"*141)
