@@ -1,6 +1,6 @@
 ﻿NetA,GPIO,,,Read
 NetB,GPIO,,,Write
-NetC,GPIO,,,Read
+NetC,GPIO,Port7,,Read
 NetD,GPIO,,,Write
 NetE,GPIO,,,Read
 NetF,GPIO,,,Write

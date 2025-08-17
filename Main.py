@@ -328,9 +328,9 @@ if __name__ == '__main__':
     # ps.sort_stats('tottime')
     # ps.print_stats()
 
-    # ValidSolutions = Find_A_Valid_Solution(Definitions, Requirements)
-    # print(f"->{ValidSolutions}")
+    ValidSolution = [Find_A_Valid_Solution(Definitions, Requirements)]
+    Print_Full_Solution_List(ValidSolution)
 
-    ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    Print_Full_Solution_List(ValidSolutions)
+    # ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
+    # Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")
