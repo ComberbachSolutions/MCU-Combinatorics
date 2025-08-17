@@ -193,7 +193,8 @@ def Generate_Next_Solution(SolutionList):
           {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24/1000} milleniums\n \
           {product_size(SolutionList.values())/ITERATIONS_PER_SECOND/3600/24/365.24/1000000} eons"
           )
-    print("Yeehaw!")
+    input("Are you sure you want to continue? Press Enter to continue...")
+    print("Yeehaw, let's goooooo!")
     for combo in product(*SolutionList.values()):
         yield dict(zip(SolutionList.keys(), combo))
 
@@ -331,5 +332,5 @@ if __name__ == '__main__':
     # print(f"->{ValidSolutions}")
 
     ValidSolutions = Find_All_Valid_Solutions(Definitions, Requirements)
-    # Print_Full_Solution_List(ValidSolutions)
+    Print_Full_Solution_List(ValidSolutions)
     print(f"{'*'*35} Fin Done {'*'*35}")
